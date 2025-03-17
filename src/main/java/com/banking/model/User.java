@@ -1,45 +1,52 @@
 package com.banking.model;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+
 @Entity
-@Table(name= "users")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+@Table(name="users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String username;
-    private String password;
-    private String email;
-    private String lastName;
-    private String firstName;
-    private String securityQuestion;
-    private String securityAnswer;
-    private int failedLoginAttempts=0;
-    private LocalDateTime lastLoginDate;
-    @Setter
-    @Getter
-    private boolean locked=false;
-    public void incrementFailedLoginAttempts(){
-        this.failedLoginAttempts++;
-    }
-    public void resetFailedLoginAttempts(){
-        this.failedLoginAttempts=0;
-    }
+    private Integer id;
 
+    @NotBlank(message = "First Name cannot be blank")
+    private String firstName;
+
+    @NotBlank(message = "Last Name cannot be blank")
+    private String lastName;
+
+    @NotBlank(message = "User Name cannot be blank")
+    private String userName;
+
+    @Email(message = "Enter a valid email")
+    @NotBlank(message = "Email cannot be blank")
+    private String email;
+
+    @NotBlank(message = "Password cannot be blank")
+    private String password;
+
+    @NotBlank(message = "Security Question cannot be blank")
+    private String securityQuestion;
+
+    @NotBlank(message = "Security Answer cannot be blank")
+    private String securityAnswer;
+
+    private boolean locked=false;
+
+    private LocalDateTime lastLoginDate;
+
+    private int loginAttempts = 0;
 }
