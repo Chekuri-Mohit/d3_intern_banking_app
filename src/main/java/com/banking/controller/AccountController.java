@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,13 +26,15 @@ public class AccountController {
         this.accountService = accountService;
     }
     @PostMapping("/create")
-    public ResponseEntity<AccountResponseDto> createAccount(@Valid @RequestBody AccountRequestDto accountRequestDto) {
-        AccountResponseDto accountResponseDto = accountService.createAccount(accountRequestDto);
+    public ResponseEntity<AccountResponseDto> createAccount(@RequestHeader("Authorization") String authHeader,@Valid @RequestBody AccountRequestDto accountRequestDto) {
+        String token = authHeader.replace("Bearer ","");
+        AccountResponseDto accountResponseDto = accountService.createAccount(token,accountRequestDto);
         return ResponseEntity.ok(accountResponseDto);
     }
     @GetMapping("/all")
-    public ResponseEntity<List<AccountResponseDto>> getAllAccounts() {
-        List<AccountResponseDto> accounts = accountService.getAllAccounts();
+    public ResponseEntity<List<List<AccountResponseDto>>> getAllAccounts(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ","");
+        List<List<AccountResponseDto>> accounts = accountService.getAllAccounts(token);
         return ResponseEntity.ok(accounts);
     }
     @PutMapping("/update")

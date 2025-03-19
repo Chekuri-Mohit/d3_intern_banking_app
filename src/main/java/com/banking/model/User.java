@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,6 +53,6 @@ public class User {
 
     private int loginAttempts = 0;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Account> accounts;
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts = new ArrayList<>();
 }

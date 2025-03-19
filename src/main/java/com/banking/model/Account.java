@@ -35,9 +35,9 @@ public class Account {
     @Column(name = "balance",nullable = false)
     private BigDecimal balance = BigDecimal.ZERO;
 
-//    @ManyToOne
-//    @JoinColumn(name="userName", nullable = false)
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name="userID", nullable = false)
+    private User user;
 
 
 

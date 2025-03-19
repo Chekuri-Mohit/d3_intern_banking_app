@@ -5,12 +5,12 @@ import com.banking.dto.AccountResponseDto;
 import com.banking.dto.AccountUpdateDto;
 import com.banking.mapper.AccountMapper;
 import com.banking.model.Account;
+import com.banking.model.User;
 import com.banking.repository.AccountRepo;
+import com.banking.repository.UserRepository;
+import com.banking.security.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,26 +24,37 @@ import java.util.stream.Collectors;
 public class AccountService {
     private final AccountRepo accountRepo;
     private final AccountMapper accountMapper;
+    private final JwtUtils jwtUtils;
+    private final UserRepository userRepository;
 
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    if(authentication!=null && authentication.getPrincipal() instanceof OAuth2ResourceServerProperties.Jwt)
     @Autowired
-    public AccountService(AccountRepo accountRepo, AccountMapper accountMapper) {
+    public AccountService(AccountRepo accountRepo, AccountMapper accountMapper, JwtUtils jwtUtils, UserRepository userRepository) {
         this.accountRepo = accountRepo;
         this.accountMapper = accountMapper;
+        this.jwtUtils = jwtUtils;
+        this.userRepository = userRepository;
     }
 
-    public AccountResponseDto createAccount(@Valid AccountRequestDto accountRequestDto) {
+    public AccountResponseDto createAccount(String token,@Valid AccountRequestDto accountRequestDto) {
+        String username = jwtUtils.extractUsername(token);
+        User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Account account = accountMapper.toEntity(accountRequestDto);
+        account.setUser(user);
         Account savedaccount = accountRepo.save(account);
         return accountMapper.toAccountResponseDto(savedaccount);
 
 
     }
 
-    public List<AccountResponseDto> getAllAccounts() {
-        List<Account> accounts = accountRepo.findAll();
-        return accounts.stream().map(accountMapper::toAccountResponseDto).collect(Collectors.toList());
+
+    public List<List<AccountResponseDto>> getAllAccounts(String token) {
+        String username = jwtUtils.extractUsername(token);
+        User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
+        Integer UserID=user.getId();
+
+        Optional<List<Account>> accounts = accountRepo.findByUserId(UserID);
+        List<List<AccountResponseDto>> collect = accounts.stream().map(accountMapper::toAccountResponseDtoList).collect(Collectors.toList());
+        return collect;
     }
 
     public AccountResponseDto updateAccount(@Valid AccountUpdateDto accountUpdateDto) {
