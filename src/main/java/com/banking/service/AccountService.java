@@ -8,17 +8,25 @@ import com.banking.model.Account;
 import com.banking.repository.AccountRepo;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+
+
 @Service
 public class AccountService {
     private final AccountRepo accountRepo;
     private final AccountMapper accountMapper;
 
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if(authentication!=null && authentication.getPrincipal() instanceof OAuth2ResourceServerProperties.Jwt)
     @Autowired
     public AccountService(AccountRepo accountRepo, AccountMapper accountMapper) {
         this.accountRepo = accountRepo;

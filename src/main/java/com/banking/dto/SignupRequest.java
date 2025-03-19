@@ -1,7 +1,7 @@
 package com.banking.dto;
 
 import lombok.Data;
-
+//
 @Data
 public class SignupRequest {
     private String firstName;
