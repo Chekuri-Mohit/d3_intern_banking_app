@@ -7,14 +7,17 @@ import com.banking.mapper.AuthMapper;
 import com.banking.model.User;
 import com.banking.repository.UserRepository;
 import com.banking.security.JwtUtils;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 //
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Validated
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -27,7 +30,7 @@ public class AuthService {
         this.jwtUtils = jwtUtils;
         this.authMapper = authMapper;
     }
-    public String signup(SignupRequest request) {
+    public String signup(@Valid SignupRequest request) {
         Optional<User> users = userRepository.findByuserName(request.getUserName());
         if(users.isPresent()){
             throw new RuntimeException("Username Already Exists");
