@@ -3,7 +3,7 @@ package com.banking.dto;
 import lombok.Data;
 //
 @Data
-public class LoginRequest {
+public class UnlockDto {
     private String userName;
-    private String password;
 }
+

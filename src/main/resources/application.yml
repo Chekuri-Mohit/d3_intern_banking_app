@@ -1,0 +1,35 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: demo
+
+  datasource:
+    url: jdbc:mysql://db_2:3306/demo
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+jwt.secret: your256bitsecretyour256bitsecretiuybuyvbuybuyb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
