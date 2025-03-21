@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class UsernameUpdateDto {
-    private String password;
+    private String currentPassword;
     private String newUsername;
     private String confirmUsername;
     @AssertTrue(message = "Both Usernames must match")
