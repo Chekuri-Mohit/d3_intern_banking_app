@@ -67,7 +67,7 @@ public class AuthService {
         user.setLastLoginDate(LocalDateTime.now());
         userRepository.save(user);
         String token = jwtUtils.generateToken(user.getUserName());
-        return new JwtResponse(token, "Welcome" + user.getUserName(), lastLogin);
+        return new JwtResponse(token, "Welcome " + user.getUserName(), lastLogin);
     }
 
     public boolean unlockUser(String userName) {

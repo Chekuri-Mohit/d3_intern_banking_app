@@ -40,8 +40,9 @@ public class AccountController {
         return ResponseEntity.ok(accounts);
     }
     @PutMapping("/update")
-    public ResponseEntity<AccountResponseDto> updateAccount(@Valid @RequestBody AccountUpdateDto accountUpdateDto) {
-        AccountResponseDto updatedAccount = accountService.updateAccount(accountUpdateDto);
+    public ResponseEntity<AccountResponseDto> updateAccount(@RequestHeader("Authorization") String authHeader,@Valid @RequestBody AccountUpdateDto accountUpdateDto) {
+        String token = authHeader.replace("Bearer ","");
+        AccountResponseDto updatedAccount = accountService.updateAccount(token,accountUpdateDto);
         return ResponseEntity.ok(updatedAccount);
 
     }

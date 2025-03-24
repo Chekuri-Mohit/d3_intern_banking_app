@@ -47,6 +47,13 @@ public class User {
     @NotBlank(message = "Security Answer cannot be blank")
     private String securityAnswer;
 
+    //optional
+    private String address;
+    private String city;
+    private String state;
+    private String middleName;
+
+
     private boolean locked=false;
 
     private LocalDateTime lastLoginDate;
