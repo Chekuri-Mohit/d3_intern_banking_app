@@ -9,5 +9,6 @@ public class AccountResponseDto {
     private String accountName;
     private AccountType accountType;
     private BigDecimal balance;
+    private String accountNumber;
 
 }

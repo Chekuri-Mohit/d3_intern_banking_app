@@ -57,12 +57,18 @@ public class AccountService {
         return collect;
     }
 
-    public AccountResponseDto updateAccount(@Valid AccountUpdateDto accountUpdateDto) {
+    public AccountResponseDto updateAccount(String token, @Valid AccountUpdateDto accountUpdateDto) {
+        String username = jwtUtils.extractUsername(token);
+        User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
+        Integer UserID=user.getId();
+
         Optional<Account> optionalAccount = accountRepo.findByAccountNumber(accountUpdateDto.getAccountNumber());
         if (optionalAccount.isEmpty()) {
             throw new RuntimeException("Account not found");
         }
         Account account = optionalAccount.get();
+        if (!UserID.equals(account.getUser().getId()))
+            throw new RuntimeException("Account number not match");
         account.setAccountName(accountUpdateDto.getNewAccountName());
         Account savedaccount = accountRepo.save(account);
         return accountMapper.toAccountResponseDto(savedaccount);
