@@ -1,9 +1,16 @@
 package com.banking.mapper;
 
+import com.banking.dto.PaymentDetailDto;
+import com.banking.dto.PaymentHistoryDto;
 import com.banking.dto.PaymentRequestDto;
 import com.banking.dto.PaymentResponseDto;
 import com.banking.model.Payment;
 import org.mapstruct.Mapper;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Mapper
 public class PaymentMapper {
@@ -23,14 +30,27 @@ public class PaymentMapper {
     public static PaymentResponseDto toDto(Payment payment) {
         return new PaymentResponseDto(
             payment.getId(),
-            payment.getAmount(),
-            payment.getNote(),
-            payment.getPayeeType(),
-            payment.getPaymentDate(),
-            payment.getStatus(),
             payment.getFromAccount().getId(),
-            payment.getToAccount().getId()
+            payment.getToAccount().getId(),
+            payment.getPaymentDate(),
+            payment.getAmount(),
+            payment.getStatus(),
+            payment.getPayeeType(),
+            payment.getNote()
         );
     }
+    public static PaymentDetailDto toDetailDto(Payment payment) {
+        return new PaymentDetailDto(
+            payment.getId(),
+            payment.getFromAccount().getAccountNumber(),
+            payment.getToAccount().getAccountNumber(),
+            payment.getPaymentDate(),
+            payment.getAmount(),
+            payment.getStatus(),
+            payment.getPayeeType(),
+            payment.getNote()
+        );
+    }
+
 }
 

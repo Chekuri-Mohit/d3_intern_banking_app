@@ -10,10 +10,9 @@ import java.time.LocalDate;
 
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class PaymentResponseDto {
-    private Long id;
+    private long id;
     private long fromAccountId;
     private long toAccountId;
     private LocalDate paymentDate;
@@ -21,8 +20,16 @@ public class PaymentResponseDto {
     private String status;
     private PayeeType payeeType;
     private String note;
+public PaymentResponseDto(long id, long fromAccountId, long toAccountId, LocalDate paymentDate, BigDecimal amount, String status, PayeeType payeeType, String note) {
+    this.id = id;
+    this.fromAccountId = fromAccountId;
+    this.toAccountId = toAccountId;
+    this.paymentDate = paymentDate;
+    this.amount = amount;
+    this.status = status;
+    this.payeeType = payeeType;
+    this.note = note;
+}
 
 
-    public PaymentResponseDto(Long id, BigDecimal amount, String note, PayeeType payeeType, LocalDate paymentDate, String status, Long id1, Long id2) {
-    }
 }

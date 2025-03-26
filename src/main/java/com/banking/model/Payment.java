@@ -1,6 +1,8 @@
 package com.banking.model;
 
 import com.banking.enums.PayeeType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,6 +26,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Payment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +55,4 @@ public class Payment{
 
     @Column(name="status", nullable=false)
     private String status="PENDING";
-
-
-
     }

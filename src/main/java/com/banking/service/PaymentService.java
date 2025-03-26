@@ -6,13 +6,16 @@ import com.banking.dto.PaymentResponseDto;
 import com.banking.mapper.PaymentMapper;
 import com.banking.model.Account;
 import com.banking.model.Payment;
+import com.banking.model.User;
 import com.banking.repository.AccountRepo;
 import com.banking.repository.PaymentRepository;
+import com.banking.repository.UserRepository;
+import com.banking.security.JwtUtils;
 import jakarta.transaction.Transactional;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -24,18 +27,30 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final AccountRepo accountRepository;
+    private final JwtUtils jwtUtils;
+    private final UserRepository userRepository;
 
-    public PaymentService(PaymentRepository paymentRepository, AccountRepo accountRepository) {
+    @Autowired
+    public PaymentService(PaymentRepository paymentRepository, AccountRepo accountRepository, JwtUtils jwtUtils, UserRepository userRepository) {
         this.paymentRepository = paymentRepository;
         this.accountRepository = accountRepository;
+        this.jwtUtils = jwtUtils;
+        this.userRepository = userRepository;
     }
 
     // Create a new payment
     @Transactional
-    public PaymentResponseDto createPayment(PaymentRequestDto dto) {
+    public PaymentResponseDto createPayment(String token, PaymentRequestDto dto) {
+        String username = jwtUtils.extractUsername(token);
+        User user = userRepository.findByuserName(username).orElseThrow(() ->  new UsernameNotFoundException("Username not found"));
+        Integer UserID = user.getId();
+
         Account fromAccount = accountRepository.findByAccountNumber(dto.getFromAccountNumber())
             .orElseThrow(() -> new RuntimeException("Sender account not found"));
 
+        if(!UserID.equals(fromAccount.getUser().getId())) {
+            throw new RuntimeException("Incorrect FROM account");
+        }
         Account toAccount = accountRepository.findByAccountNumber(dto.getToAccountNumber())
             .orElseThrow(() -> new RuntimeException("Receiver account not found"));
 
