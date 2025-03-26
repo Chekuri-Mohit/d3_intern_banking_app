@@ -28,6 +28,7 @@ public class PaymentController {
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
+
     @PostMapping("/make")
     public ResponseEntity<PaymentResponseDto> makePayment(@RequestHeader("Authorization") String authHeader, @RequestBody PaymentRequestDto request) {
         String token = authHeader.replace("Bearer ", "");

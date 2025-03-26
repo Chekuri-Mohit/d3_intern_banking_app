@@ -39,6 +39,7 @@ public class PaymentMapper {
             payment.getNote()
         );
     }
+
     public static PaymentDetailDto toDetailDto(Payment payment) {
         return new PaymentDetailDto(
             payment.getId(),

@@ -21,6 +21,7 @@ public class PaymentDetailDto {
     private String note;
     private PayeeType payeeType;
 
+
     public PaymentDetailDto(Long id, String accountNumber, String accountNumber1, LocalDate paymentDate, BigDecimal amount, String status, PayeeType payeeType, String note) {
     }
 }
