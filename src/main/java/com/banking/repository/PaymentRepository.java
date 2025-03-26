@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
+
     @Query("""
         SELECT new com.banking.dto.PaymentHistoryDto(
             p.paymentDate,
