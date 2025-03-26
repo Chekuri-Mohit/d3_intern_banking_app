@@ -6,7 +6,7 @@ spring:
     name: demo
 
   datasource:
-    url: jdbc:mysql://db_2:3306/demo
+    url: jdbc:mysql://interns-project-mysql-1:3306/demo
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
