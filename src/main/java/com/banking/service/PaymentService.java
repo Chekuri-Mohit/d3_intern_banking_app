@@ -13,6 +13,8 @@ import com.banking.repository.UserRepository;
 import com.banking.security.JwtUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +40,10 @@ public class PaymentService {
         this.userRepository = userRepository;
     }
 
-
     // Create a new payment
     @Transactional
-    public PaymentResponseDto createPayment(String token, PaymentRequestDto dto) {
-        String username = jwtUtils.extractUsername(token);
+    public PaymentResponseDto createPayment(String username, PaymentRequestDto dto) {
+
         User user = userRepository.findByuserName(username).orElseThrow(() ->  new UsernameNotFoundException("Username not found"));
         Integer UserID = user.getId();
 
@@ -79,7 +80,8 @@ public class PaymentService {
     }
 
     // Get all payments
-    public List<PaymentResponseDto> getAllPayments() {
+    public List<PaymentResponseDto> getAllPayments(String username) {
+
         return paymentRepository.findAll().stream()
             .map(PaymentMapper::toDto)
             .collect(Collectors.toList());
