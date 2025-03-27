@@ -26,8 +26,7 @@ public class CredentialsService {
         this.userRepository = userRepository;
     }
 
-    public void updatePassword(String token, @Valid PasswordUpdateDto passwordUpdateDto) {
-        String username = jwtUtils.extractUsername(token);
+    public void updatePassword(String username, @Valid PasswordUpdateDto passwordUpdateDto) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         if(!passwordEncoder.matches(passwordUpdateDto.getCurrentPassword(), user.getPassword())) {
             throw new RuntimeException("Incorrect password");
@@ -35,8 +34,7 @@ public class CredentialsService {
         user.setPassword(passwordEncoder.encode(passwordUpdateDto.getNewPassword()));
         userRepository.save(user);
     }
-    public void updateUsername(String token, @Valid UsernameUpdateDto usernameUpdateDto) {
-        String username = jwtUtils.extractUsername(token);
+    public void updateUsername(String username, @Valid UsernameUpdateDto usernameUpdateDto) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         if(!passwordEncoder.matches(usernameUpdateDto.getCurrentPassword(), user.getPassword())) {
             throw new RuntimeException("Incorrect password");
@@ -49,8 +47,7 @@ public class CredentialsService {
 
     }
 
-    public void updateSecurityQA(String token, @Valid SecurityUpdateDto securityUpdateDto) {
-        String username = jwtUtils.extractUsername(token);
+    public void updateSecurityQA(String username, @Valid SecurityUpdateDto securityUpdateDto) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         user.setSecurityQuestion(securityUpdateDto.getSecurityQuestion());
         user.setSecurityAnswer(securityUpdateDto.getSecurityAnswer());
