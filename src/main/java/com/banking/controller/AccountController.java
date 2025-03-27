@@ -49,7 +49,6 @@ public class AccountController {
         String username = authentication.getName();
         AccountResponseDto updatedAccount = accountService.updateAccount(username,accountUpdateDto);
         return ResponseEntity.ok(updatedAccount);
-
     }
 
 }

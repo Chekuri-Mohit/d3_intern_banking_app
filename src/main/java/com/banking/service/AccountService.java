@@ -57,7 +57,9 @@ public class AccountService {
         return collect;
     }
 
+
     public AccountResponseDto updateAccount(String username, @Valid AccountUpdateDto accountUpdateDto) {
+
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer UserID=user.getId();
 
@@ -66,9 +68,11 @@ public class AccountService {
             throw new RuntimeException("Account not found");
         }
         Account account = optionalAccount.get();
+
         if(!UserID.equals(account.getUser().getId())) {
             throw new RuntimeException("User not the same account number");
         }
+
         account.setAccountName(accountUpdateDto.getNewAccountName());
         Account savedaccount = accountRepo.save(account);
         return accountMapper.toAccountResponseDto(savedaccount);
