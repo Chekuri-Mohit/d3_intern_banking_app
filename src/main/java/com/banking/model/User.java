@@ -62,4 +62,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Account> accounts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Payee> payees = new ArrayList<>();
 }
