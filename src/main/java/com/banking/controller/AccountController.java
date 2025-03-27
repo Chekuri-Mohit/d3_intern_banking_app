@@ -7,6 +7,8 @@ import com.banking.service.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,20 +30,24 @@ public class AccountController {
         this.accountService = accountService;
     }
     @PostMapping("/create")
-    public ResponseEntity<AccountResponseDto> createAccount(@RequestHeader("Authorization") String authHeader,@Valid @RequestBody AccountRequestDto accountRequestDto) {
-        String token = authHeader.replace("Bearer ","");
-        AccountResponseDto accountResponseDto = accountService.createAccount(token,accountRequestDto);
+    public ResponseEntity<AccountResponseDto> createAccount(@Valid @RequestBody AccountRequestDto accountRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        AccountResponseDto accountResponseDto = accountService.createAccount(username,accountRequestDto);
         return ResponseEntity.ok(accountResponseDto);
     }
     @GetMapping("/all")
-    public ResponseEntity<List<List<AccountResponseDto>>> getAllAccounts(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ","");
-        List<List<AccountResponseDto>> accounts = accountService.getAllAccounts(token);
+    public ResponseEntity<List<List<AccountResponseDto>>> getAllAccounts() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        List<List<AccountResponseDto>> accounts = accountService.getAllAccounts(username);
         return ResponseEntity.ok(accounts);
     }
     @PutMapping("/update")
     public ResponseEntity<AccountResponseDto> updateAccount(@Valid @RequestBody AccountUpdateDto accountUpdateDto) {
-        AccountResponseDto updatedAccount = accountService.updateAccount(accountUpdateDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        AccountResponseDto updatedAccount = accountService.updateAccount(username,accountUpdateDto);
         return ResponseEntity.ok(updatedAccount);
 
     }

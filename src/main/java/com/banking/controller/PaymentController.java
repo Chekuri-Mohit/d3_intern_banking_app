@@ -6,6 +6,8 @@ import com.banking.dto.PaymentResponseDto;
 import com.banking.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +32,10 @@ public class PaymentController {
     }
 
     @PostMapping("/make")
-    public ResponseEntity<PaymentResponseDto> makePayment(@RequestHeader("Authorization") String authHeader, @RequestBody PaymentRequestDto request) {
-        String token = authHeader.replace("Bearer ", "");
-        PaymentResponseDto response = paymentService.createPayment(token,request);
+    public ResponseEntity<PaymentResponseDto> makePayment(@RequestBody PaymentRequestDto request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        PaymentResponseDto response = paymentService.createPayment(username,request);
         return ResponseEntity.ok(response);
     }
     @GetMapping("/history/{userId}")

@@ -7,6 +7,8 @@ import com.banking.service.CredentialsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,22 +25,26 @@ public class CredentialsController {
         this.credentialsService = credentialsService;
     }
     @PutMapping("/updatePassword")
-    public ResponseEntity<String> updatePassword(@RequestHeader("Authorization") String authHeader,@Valid @RequestBody PasswordUpdateDto passwordUpdateDto) {
-        String token = authHeader.replace("Bearer ","");
-        credentialsService.updatePassword(token,passwordUpdateDto);
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody PasswordUpdateDto passwordUpdateDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        credentialsService.updatePassword(username,passwordUpdateDto);
         return ResponseEntity.ok("Successfully updated password");
 
     }
     @PutMapping("/updateUsername")
-    public ResponseEntity<String> updateUsername(@RequestHeader("Authorization") String authHeader,@Valid @RequestBody UsernameUpdateDto usernameUpdateDto) {
-        String token = authHeader.replace("Bearer ","");
-        credentialsService.updateUsername(token,usernameUpdateDto);
+    public ResponseEntity<String> updateUsername(@Valid @RequestBody UsernameUpdateDto usernameUpdateDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        credentialsService.updateUsername(username,usernameUpdateDto);
         return ResponseEntity.ok("Successfully updated username");
     }
     @PutMapping("/updateSecurityQA")
-    public ResponseEntity<String> updateSecurityQA(@RequestHeader("Authorization") String authHeader,@Valid @RequestBody SecurityUpdateDto securityUpdateDto) {
-        String token = authHeader.replace("Bearer ","");
-        credentialsService.updateSecurityQA(token,securityUpdateDto);
+    public ResponseEntity<String> updateSecurityQA(@Valid @RequestBody SecurityUpdateDto securityUpdateDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        credentialsService.updateSecurityQA(username,securityUpdateDto);
         return ResponseEntity.ok("Successfully updated security QA");
     }
 }

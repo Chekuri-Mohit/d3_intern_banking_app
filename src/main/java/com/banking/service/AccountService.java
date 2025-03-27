@@ -35,8 +35,8 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
-    public AccountResponseDto createAccount(String token,@Valid AccountRequestDto accountRequestDto) {
-        String username = jwtUtils.extractUsername(token);
+    public AccountResponseDto createAccount(String username,@Valid AccountRequestDto accountRequestDto) {
+
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Account account = accountMapper.toEntity(accountRequestDto);
         account.setUser(user);
@@ -47,8 +47,8 @@ public class AccountService {
     }
 
 
-    public List<List<AccountResponseDto>> getAllAccounts(String token) {
-        String username = jwtUtils.extractUsername(token);
+    public List<List<AccountResponseDto>> getAllAccounts(String username) {
+
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer UserID=user.getId();
 
@@ -57,12 +57,18 @@ public class AccountService {
         return collect;
     }
 
-    public AccountResponseDto updateAccount(@Valid AccountUpdateDto accountUpdateDto) {
+    public AccountResponseDto updateAccount(String username, @Valid AccountUpdateDto accountUpdateDto) {
+        User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
+        Integer UserID=user.getId();
+
         Optional<Account> optionalAccount = accountRepo.findByAccountNumber(accountUpdateDto.getAccountNumber());
         if (optionalAccount.isEmpty()) {
             throw new RuntimeException("Account not found");
         }
         Account account = optionalAccount.get();
+        if(!UserID.equals(account.getUser().getId())) {
+            throw new RuntimeException("User not the same account number");
+        }
         account.setAccountName(accountUpdateDto.getNewAccountName());
         Account savedaccount = accountRepo.save(account);
         return accountMapper.toAccountResponseDto(savedaccount);
