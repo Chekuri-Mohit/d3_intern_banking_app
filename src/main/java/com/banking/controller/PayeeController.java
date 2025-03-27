@@ -6,6 +6,8 @@ import com.banking.dto.PayeeResponseDto;
 import com.banking.service.PayeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,14 +29,16 @@ public class PayeeController {
         this.payeeService = payeeService;
     }
     @PostMapping
-    public ResponseEntity<PayeeResponseDto> createPayee(@RequestHeader("Authorization") String authHeader, @RequestBody @Valid PayeeRequestDto payeeRequestDto) {
-        String token = authHeader.substring(7);
-        return ResponseEntity.ok(payeeService.createPayee(token,payeeRequestDto));
+    public ResponseEntity<PayeeResponseDto> createPayee(@RequestBody @Valid PayeeRequestDto payeeRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return ResponseEntity.ok(payeeService.createPayee(username,payeeRequestDto));
     }
     @GetMapping
-    public ResponseEntity<List<List<PayeeResponseDto>>>getAllPayees(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.substring(7);
-        return ResponseEntity.ok(payeeService.getAllPayees(token));
+    public ResponseEntity<List<List<PayeeResponseDto>>>getAllPayees() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return ResponseEntity.ok(payeeService.getAllPayees(username));
     }
     @PutMapping("/{id}")
     public ResponseEntity<PayeeResponseDto> updatePayee(

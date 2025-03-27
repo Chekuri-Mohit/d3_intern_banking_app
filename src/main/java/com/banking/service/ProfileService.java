@@ -11,18 +11,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProfileService {
     private final UserRepository userRepository;
-    private final JwtUtils jwtUtils;
     private final ProfileMapper profileMapper;
     @Autowired
-    public ProfileService(UserRepository userRepository, JwtUtils jwtUtils, ProfileMapper profileMapper) {
+    public ProfileService(UserRepository userRepository, ProfileMapper profileMapper) {
         this.userRepository = userRepository;
-        this.jwtUtils = jwtUtils;
         this.profileMapper = profileMapper;
     }
 
 
-    public void updateProfile(String token, UserProfileDto userProfileDto) {
-        String username = jwtUtils.extractUsername(token);
+    public void updateProfile(String username, UserProfileDto userProfileDto) {
         User user = userRepository.findByuserName(username).orElseThrow(()-> new RuntimeException("Invalid username"));
 
         if(userProfileDto.getFirstName()!=null && !userProfileDto.getFirstName().isBlank()) {
@@ -54,8 +51,7 @@ public class ProfileService {
 
     }
 
-    public UserProfileDto getProfile(String token) {
-        String username = jwtUtils.extractUsername(token);
+    public UserProfileDto getProfile(String username) {
         User user = userRepository.findByuserName(username).orElseThrow(()-> new RuntimeException("Invalid username"));
         return profileMapper.convertUserToUserProfileDto(user);
     }
