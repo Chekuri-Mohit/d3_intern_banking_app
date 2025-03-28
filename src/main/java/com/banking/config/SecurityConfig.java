@@ -34,15 +34,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth->auth
+            .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
-                    .anyRequest().authenticated()
+                .anyRequest().authenticated()
             )
             .authenticationProvider(authProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
+
     @Bean
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -50,10 +51,12 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authProvider;
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -64,11 +67,11 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return (CorsConfigurationSource) source;
     }
+
     @Bean
     public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
 
 
 }

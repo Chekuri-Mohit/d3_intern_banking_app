@@ -1,7 +1,6 @@
 package com.banking.model;
 
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -55,7 +54,7 @@ public class User {
     private String middleName;
 
 
-    private boolean locked=false;
+    private boolean locked = false;
 
     private LocalDateTime lastLoginDate;
 

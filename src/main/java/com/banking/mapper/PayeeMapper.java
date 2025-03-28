@@ -9,22 +9,23 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = "spring")
 @Component
 public class PayeeMapper {
-    public Payee toEntity(PayeeRequestDto dto){
+    public Payee toEntity(PayeeRequestDto dto) {
         Payee payee = new Payee();
         payee.setName(dto.getName());
         payee.setNickname(dto.getNickname());
-    payee.setAddressLine1(dto.getAddressLine1());
-    payee.setAddressLine2(dto.getAddressLine2());
-    payee.setCity(dto.getCity());
-    payee.setState(dto.getState());
-    payee.setZip(dto.getZip());
-    payee.setPhoneNumber((dto.getPhoneNumber()));
-    payee.setAccountNumber(dto.getAccountNumber());
-    payee.setStatus(dto.getStatus());
-    return payee;
+        payee.setAddressLine1(dto.getAddressLine1());
+        payee.setAddressLine2(dto.getAddressLine2());
+        payee.setCity(dto.getCity());
+        payee.setState(dto.getState());
+        payee.setZip(dto.getZip());
+        payee.setPhoneNumber((dto.getPhoneNumber()));
+        payee.setAccountNumber(dto.getAccountNumber());
+        payee.setStatus(dto.getStatus());
+        return payee;
     }
-    public PayeeResponseDto toDto(Payee payee){
-        return  new PayeeResponseDto(
+
+    public PayeeResponseDto toDto(Payee payee) {
+        return new PayeeResponseDto(
             payee.getId(),
             payee.getName(),
             payee.getNickname(),

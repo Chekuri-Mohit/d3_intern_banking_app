@@ -1,6 +1,6 @@
 package com.banking.mapper;
 //
-import org.mapstruct.Mapper;
+
 import com.banking.dto.AccountRequestDto;
 import com.banking.dto.AccountResponseDto;
 import com.banking.model.Account;
@@ -21,6 +21,7 @@ public interface AccountMapper {
     AccountResponseDto toAccountResponseDto(Account account);
 
     List<AccountResponseDto> toAccountResponseDtoList(List<Account> accounts);
+
     default String generateAccountNumber() {
         return java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
