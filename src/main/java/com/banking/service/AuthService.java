@@ -21,18 +21,20 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final JwtUtils jwtUtils;
     private final AuthMapper authMapper;
+
     @Autowired
     public AuthService(UserRepository userRepository, JwtUtils jwtUtils, AuthMapper authMapper) {
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.authMapper = authMapper;
     }
+
     public String signup(@Valid SignupRequest request) {
         Optional<User> users = userRepository.findByuserName(request.getUserName());
-        if(users.isPresent()){
+        if (users.isPresent()) {
             throw new RuntimeException("Username Already Exists");
 
         }
@@ -41,17 +43,18 @@ public class AuthService {
         userRepository.save(user);
         return "signup successful";
     }
+
     public JwtResponse login(LoginRequest request) {
         Optional<User> userOptional = userRepository.findByuserName(request.getUserName());
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             throw new RuntimeException("Invalid user credentials");
         }
         User user = userOptional.get();
-        if(user.isLocked()){
+        if (user.isLocked()) {
             return new JwtResponse("User is locked. Please contact customer service");
         }
-        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            int attempts = user.getLoginAttempts()+1;
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            int attempts = user.getLoginAttempts() + 1;
             user.setLoginAttempts(attempts);
             if (user.getLoginAttempts() >= 3) {
                 user.setLocked(true);
@@ -59,7 +62,7 @@ public class AuthService {
             userRepository.save(user);
             return new JwtResponse("Invalid password");
         }
-        if(user.isLocked()){
+        if (user.isLocked()) {
             return new JwtResponse("User is locked. Please contact customer service");
         }
         user.setLoginAttempts(0);
@@ -72,7 +75,7 @@ public class AuthService {
 
     public boolean unlockUser(String userName) {
         Optional<User> users = userRepository.findByuserName(userName);
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             throw new RuntimeException("Invalid Username");
         }
         User user = users.get();

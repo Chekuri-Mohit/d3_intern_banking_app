@@ -15,18 +15,18 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
 
     @Query("""
-        SELECT new com.banking.dto.PaymentHistoryDto(
-            p.paymentDate,
-            fromAcc.accountNumber,
-            toAcc.accountNumber,
-            p.amount
-        )
-        FROM Payment p
-        JOIN p.fromAccount fromAcc
-        JOIN p.toAccount toAcc
-        JOIN fromAcc.user u
-        WHERE u.id = :userId
-        ORDER BY p.paymentDate DESC
-    """)
+            SELECT new com.banking.dto.PaymentHistoryDto(
+                p.paymentDate,
+                fromAcc.accountNumber,
+                toAcc.accountNumber,
+                p.amount
+            )
+            FROM Payment p
+            JOIN p.fromAccount fromAcc
+            JOIN p.toAccount toAcc
+            JOIN fromAcc.user u
+            WHERE u.id = :userId
+            ORDER BY p.paymentDate DESC
+        """)
     List<PaymentHistoryDto> findPaymentHistoryByUserId(@Param("userId") Long userId);
 }

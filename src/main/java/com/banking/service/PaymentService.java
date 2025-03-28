@@ -10,11 +10,8 @@ import com.banking.model.User;
 import com.banking.repository.AccountRepo;
 import com.banking.repository.PaymentRepository;
 import com.banking.repository.UserRepository;
-import com.banking.security.JwtUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +26,12 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final AccountRepo accountRepository;
-    private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
 
     @Autowired
-    public PaymentService(PaymentRepository paymentRepository, AccountRepo accountRepository, JwtUtils jwtUtils, UserRepository userRepository) {
+    public PaymentService(PaymentRepository paymentRepository, AccountRepo accountRepository, UserRepository userRepository) {
         this.paymentRepository = paymentRepository;
         this.accountRepository = accountRepository;
-        this.jwtUtils = jwtUtils;
         this.userRepository = userRepository;
     }
 
@@ -44,13 +39,13 @@ public class PaymentService {
     @Transactional
     public PaymentResponseDto createPayment(String username, PaymentRequestDto dto) {
 
-        User user = userRepository.findByuserName(username).orElseThrow(() ->  new UsernameNotFoundException("Username not found"));
+        User user = userRepository.findByuserName(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         Integer UserID = user.getId();
 
         Account fromAccount = accountRepository.findByAccountNumber(dto.getFromAccountNumber())
             .orElseThrow(() -> new RuntimeException("Sender account not found"));
 
-        if(!UserID.equals(fromAccount.getUser().getId())) {
+        if (!UserID.equals(fromAccount.getUser().getId())) {
             throw new RuntimeException("Incorrect FROM account");
         }
         Account toAccount = accountRepository.findByAccountNumber(dto.getToAccountNumber())
@@ -79,15 +74,17 @@ public class PaymentService {
         return PaymentMapper.toDto(payment);
     }
 
-    // Get all payments
-    public List<PaymentResponseDto> getAllPayments(String username) {
-
-        return paymentRepository.findAll().stream()
-            .map(PaymentMapper::toDto)
-            .collect(Collectors.toList());
-    }
-    public Map<LocalDate, List<PaymentHistoryDto>> getPaymentHistoryGroupedByDate(long userId) {
-        List<PaymentHistoryDto> history= paymentRepository.findPaymentHistoryByUserId(userId);
+    //    // Get all payments
+//    public List<PaymentResponseDto> getAllPayments(String username) {
+//
+//        return paymentRepository.findAll().stream()
+//            .map(PaymentMapper::toDto)
+//            .collect(Collectors.toList());
+//    }
+    public Map<LocalDate, List<PaymentHistoryDto>> getPaymentHistoryGroupedByDate(String username) {
+        User user = userRepository.findByuserName(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        Integer UserID = user.getId();
+        List<PaymentHistoryDto> history = paymentRepository.findPaymentHistoryByUserId(Long.valueOf(UserID));
         return history.stream().collect(Collectors.groupingBy(PaymentHistoryDto::getPaymentDate));
     }
 /*

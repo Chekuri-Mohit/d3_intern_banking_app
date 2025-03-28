@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-//
+
 @Data
 public class SignupRequest {
     @NotBlank(message = "First Name cannot be blank")
@@ -21,7 +21,7 @@ public class SignupRequest {
     private String email;
 
     @NotBlank(message = "Password cannot be blank")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,25}$",message = "Password must be 8-25 characters long, include uppercase, lowercase, digit and special character")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,25}$", message = "Password must be 8-25 characters long, include uppercase, lowercase, digit and special character")
     private String password;
 
     @NotBlank(message = "Security Question cannot be blank")

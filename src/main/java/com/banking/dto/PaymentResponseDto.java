@@ -1,7 +1,6 @@
 package com.banking.dto;
 
 import com.banking.enums.PayeeType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,16 +20,16 @@ public class PaymentResponseDto {
     private PayeeType payeeType;
     private String note;
 
-public PaymentResponseDto(long id, long fromAccountId, long toAccountId, LocalDate paymentDate, BigDecimal amount, String status, PayeeType payeeType, String note) {
-    this.id = id;
-    this.fromAccountId = fromAccountId;
-    this.toAccountId = toAccountId;
-    this.paymentDate = paymentDate;
-    this.amount = amount;
-    this.status = status;
-    this.payeeType = payeeType;
-    this.note = note;
-}
+    public PaymentResponseDto(long id, long fromAccountId, long toAccountId, LocalDate paymentDate, BigDecimal amount, String status, PayeeType payeeType, String note) {
+        this.id = id;
+        this.fromAccountId = fromAccountId;
+        this.toAccountId = toAccountId;
+        this.paymentDate = paymentDate;
+        this.amount = amount;
+        this.status = status;
+        this.payeeType = payeeType;
+        this.note = note;
+    }
 
 
 }

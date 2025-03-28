@@ -20,19 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
+
     @Autowired
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestBody SignupRequest request){
+    public String signup(@RequestBody SignupRequest request) {
         System.out.println("sign up success");
         return authService.signup(request);
     }
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody LoginRequest request){
+    public JwtResponse login(@RequestBody LoginRequest request) {
         System.out.println("login success");
         return authService.login(request);
     }
@@ -42,7 +43,7 @@ public class AuthController {
         boolean isUnlocked = authService.unlockUser(unlockDto.getUserName());
         if (isUnlocked) {
             return ResponseEntity.ok("Successfully Unlocked");
-        }else {
+        } else {
             return ResponseEntity.badRequest().body("Unlock Failed");
         }
     }

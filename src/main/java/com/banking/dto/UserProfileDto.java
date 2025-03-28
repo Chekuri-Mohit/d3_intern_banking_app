@@ -19,7 +19,6 @@ public class UserProfileDto {
     private String confirmEmail;
 
 
-
     //optional
     private String address;
     private String city;

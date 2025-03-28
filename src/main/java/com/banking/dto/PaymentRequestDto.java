@@ -1,7 +1,6 @@
 package com.banking.dto;
 
 import com.banking.enums.PayeeType;
-import com.banking.model.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

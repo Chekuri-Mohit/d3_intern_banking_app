@@ -8,7 +8,6 @@ import com.banking.model.Account;
 import com.banking.model.User;
 import com.banking.repository.AccountRepo;
 import com.banking.repository.UserRepository;
-import com.banking.security.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,24 +17,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-
-
 @Service
 public class AccountService {
     private final AccountRepo accountRepo;
     private final AccountMapper accountMapper;
-    private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
 
     @Autowired
-    public AccountService(AccountRepo accountRepo, AccountMapper accountMapper, JwtUtils jwtUtils, UserRepository userRepository) {
+    public AccountService(AccountRepo accountRepo, AccountMapper accountMapper,UserRepository userRepository) {
         this.accountRepo = accountRepo;
         this.accountMapper = accountMapper;
-        this.jwtUtils = jwtUtils;
         this.userRepository = userRepository;
     }
 
-    public AccountResponseDto createAccount(String username,@Valid AccountRequestDto accountRequestDto) {
+    public AccountResponseDto createAccount(String username, @Valid AccountRequestDto accountRequestDto) {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Account account = accountMapper.toEntity(accountRequestDto);
@@ -50,7 +45,7 @@ public class AccountService {
     public List<List<AccountResponseDto>> getAllAccounts(String username) {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
-        Integer UserID=user.getId();
+        Integer UserID = user.getId();
 
         Optional<List<Account>> accounts = accountRepo.findByUserId(UserID);
         List<List<AccountResponseDto>> collect = accounts.stream().map(accountMapper::toAccountResponseDtoList).collect(Collectors.toList());
@@ -61,7 +56,7 @@ public class AccountService {
     public AccountResponseDto updateAccount(String username, @Valid AccountUpdateDto accountUpdateDto) {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
-        Integer UserID=user.getId();
+        Integer UserID = user.getId();
 
         Optional<Account> optionalAccount = accountRepo.findByAccountNumber(accountUpdateDto.getAccountNumber());
         if (optionalAccount.isEmpty()) {
@@ -69,7 +64,7 @@ public class AccountService {
         }
         Account account = optionalAccount.get();
 
-        if(!UserID.equals(account.getUser().getId())) {
+        if (!UserID.equals(account.getUser().getId())) {
             throw new RuntimeException("User not the same account number");
         }
 
