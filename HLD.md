@@ -163,7 +163,5 @@
 
 * **`accounts (1) → (M) payments`**
 
-* **`accounts (1) → (M) payees`**
-
-* **`payees (1) → (M) payments`**
+* **`users (1) → (M) payees`**
 
