@@ -32,10 +32,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
+            .cors(c -> {
+            CorsConfigurationSource source = request -> {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(List.of("*"));
+                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                config.setAllowedHeaders(List.of("*"));
+                return config;
+            };
+            c.configurationSource(source);
+        })
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/**","/forgot/**").permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authProvider())
@@ -57,16 +68,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return (CorsConfigurationSource) source;
-    }
 
     @Bean
     public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
