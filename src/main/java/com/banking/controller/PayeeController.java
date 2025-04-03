@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/payees")
 
@@ -45,7 +46,9 @@ public class PayeeController {
     @PutMapping("/{id}")
     public ResponseEntity<PayeeResponseDto> updatePayee(
         @PathVariable Long id, @RequestBody @Valid PayeeRequestDto payeeRequestDto) {
-        return ResponseEntity.ok(payeeService.updatePayee(id, payeeRequestDto));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return ResponseEntity.ok(payeeService.updatePayee(username,id, payeeRequestDto));
     }
 
     @DeleteMapping("/{id}")
