@@ -1,18 +1,16 @@
 package com.banking.mapper;
 //
 
-import com.banking.dto.AccountRequestDto;
-import com.banking.dto.AccountResponseDto;
 import com.banking.model.Account;
+import com.banking.schema.AccountRequestDto;
+import com.banking.schema.AccountResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
-    AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
     @Mapping(target = "accountNumber", expression = "java(generateAccountNumber())")
     @Mapping(target = "balance", constant = "0")

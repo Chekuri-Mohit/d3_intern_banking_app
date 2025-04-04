@@ -1,6 +1,6 @@
 package com.banking.service;
 
-import com.banking.dto.UserProfileDto;
+import com.banking.schema.UserProfileDto;
 import com.banking.mapper.ProfileMapper;
 import com.banking.model.User;
 import com.banking.repository.UserRepository;

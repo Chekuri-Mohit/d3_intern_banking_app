@@ -1,8 +1,9 @@
 package com.banking.controller;
 
-import com.banking.dto.PasswordUpdateDto;
-import com.banking.dto.SecurityUpdateDto;
-import com.banking.dto.UsernameUpdateDto;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.PasswordUpdateDto;
+import com.banking.schema.SecurityUpdateDto;
+import com.banking.schema.UsernameUpdateDto;
 import com.banking.service.CredentialsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,28 +28,27 @@ public class CredentialsController {
     }
 
     @PutMapping("/updatePassword")
-    public ResponseEntity<String> updatePassword(@Valid @RequestBody PasswordUpdateDto passwordUpdateDto) {
+    public ResponseEntity<ErrorResponse> updatePassword(@Valid @RequestBody PasswordUpdateDto passwordUpdateDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        credentialsService.updatePassword(username, passwordUpdateDto);
-        return ResponseEntity.ok("Successfully updated password");
+        return ResponseEntity.ok(credentialsService.updatePassword(username, passwordUpdateDto));
 
     }
 
     @PutMapping("/updateUsername")
-    public ResponseEntity<String> updateUsername(@Valid @RequestBody UsernameUpdateDto usernameUpdateDto) {
+    public ResponseEntity<ErrorResponse> updateUsername(@Valid @RequestBody UsernameUpdateDto usernameUpdateDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        credentialsService.updateUsername(username, usernameUpdateDto);
-        return ResponseEntity.ok("Successfully updated username");
+        return ResponseEntity.ok(credentialsService.updateUsername(username, usernameUpdateDto));
+
     }
 
     @PutMapping("/updateSecurityQA")
-    public ResponseEntity<String> updateSecurityQA(@Valid @RequestBody SecurityUpdateDto securityUpdateDto) {
+    public ResponseEntity<ErrorResponse> updateSecurityQA(@Valid @RequestBody SecurityUpdateDto securityUpdateDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        credentialsService.updateSecurityQA(username, securityUpdateDto);
-        return ResponseEntity.ok("Successfully updated security QA");
+        return ResponseEntity.ok(credentialsService.updateSecurityQA(username, securityUpdateDto));
+
     }
 }

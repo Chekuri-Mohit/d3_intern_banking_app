@@ -1,6 +1,6 @@
 package com.banking.controller;
 
-import com.banking.dto.UserProfileDto;
+import com.banking.schema.UserProfileDto;
 import com.banking.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

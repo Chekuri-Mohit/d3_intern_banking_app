@@ -1,8 +1,9 @@
 package com.banking.service;
 
-import com.banking.dto.JwtResponse;
-import com.banking.dto.LoginRequest;
-import com.banking.dto.SignupRequest;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.JwtResponse;
+import com.banking.schema.LoginRequest;
+import com.banking.schema.SignupRequest;
 import com.banking.mapper.AuthMapper;
 import com.banking.model.User;
 import com.banking.repository.UserRepository;
@@ -32,7 +33,7 @@ public class AuthService {
         this.authMapper = authMapper;
     }
 
-    public String signup(@Valid SignupRequest request) {
+    public ErrorResponse signup(@Valid SignupRequest request) {
         Optional<User> users = userRepository.findByuserName(request.getUserName());
         if (users.isPresent()) {
             throw new RuntimeException("Username Already Exists");
@@ -41,7 +42,7 @@ public class AuthService {
         User user = authMapper.SignupRequesttoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
-        return "signup successful";
+        return new ErrorResponse(true,"Signup Successful");
     }
 
     public JwtResponse login(LoginRequest request) {

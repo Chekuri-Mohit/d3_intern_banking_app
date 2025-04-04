@@ -1,8 +1,8 @@
 package com.banking.service;
 
-import com.banking.dto.PaymentHistoryDto;
-import com.banking.dto.PaymentRequestDto;
-import com.banking.dto.PaymentResponseDto;
+import com.banking.schema.PaymentHistoryDto;
+import com.banking.schema.PaymentRequestDto;
+import com.banking.schema.PaymentResponseDto;
 import com.banking.mapper.PaymentMapper;
 import com.banking.model.Account;
 import com.banking.model.Payment;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,9 @@ public class PaymentService {
         // Check if the sender has sufficient balance
         if (fromAccount.getBalance().compareTo(dto.getAmount()) < 0) {
             throw new RuntimeException("Insufficient balance");
+        }
+        if(dto.getAmount().equals(BigDecimal.ZERO)){
+            throw new RuntimeException("Cannot pay zero amount");
         }
 
         // Update balances with BigDecimal for precision

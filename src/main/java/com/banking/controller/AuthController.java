@@ -1,9 +1,10 @@
 package com.banking.controller;
 
-import com.banking.dto.JwtResponse;
-import com.banking.dto.LoginRequest;
-import com.banking.dto.SignupRequest;
-import com.banking.dto.UnlockDto;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.JwtResponse;
+import com.banking.schema.LoginRequest;
+import com.banking.schema.SignupRequest;
+import com.banking.schema.UnlockDto;
 import com.banking.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,12 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestBody SignupRequest request) {
-        System.out.println("sign up success");
-        return authService.signup(request);
+    public ResponseEntity<ErrorResponse> signup(@Valid @RequestBody SignupRequest request) {
+        return ResponseEntity.ok(authService.signup(request));
     }
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody LoginRequest request) {
-        System.out.println("login success");
+    public JwtResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
 

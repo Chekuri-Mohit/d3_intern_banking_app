@@ -1,7 +1,8 @@
 package com.banking.service;
 
-import com.banking.dto.PayeeRequestDto;
-import com.banking.dto.PayeeResponseDto;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.PayeeRequestDto;
+import com.banking.schema.PayeeResponseDto;
 import com.banking.mapper.Payee2Mapper;
 import com.banking.model.Payee;
 import com.banking.model.User;
@@ -103,10 +104,11 @@ public class PayeeService {
 
     }
 
-    public void deletePayee(Long id) {
+    public ErrorResponse deletePayee(Long id) {
         if (!payeeRepository.existsById(id)) {
             throw new RuntimeException("Payee not found with id " + id);
         }
         payeeRepository.deleteById(id);
+        return new ErrorResponse(true,"Deleted Payee with id " + id);
     }
 }
