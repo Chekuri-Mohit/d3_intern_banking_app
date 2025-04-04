@@ -1,8 +1,8 @@
 package com.banking.mapper;
 
-import com.banking.dto.PaymentDetailDto;
-import com.banking.dto.PaymentRequestDto;
-import com.banking.dto.PaymentResponseDto;
+import com.banking.schema.PaymentDetailDto;
+import com.banking.schema.PaymentRequestDto;
+import com.banking.schema.PaymentResponseDto;
 import com.banking.model.Payment;
 import org.mapstruct.Mapper;
 

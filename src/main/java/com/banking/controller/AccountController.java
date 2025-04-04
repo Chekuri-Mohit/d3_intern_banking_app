@@ -1,8 +1,8 @@
 package com.banking.controller;
 
-import com.banking.dto.AccountRequestDto;
-import com.banking.dto.AccountResponseDto;
-import com.banking.dto.AccountUpdateDto;
+import com.banking.schema.AccountRequestDto;
+import com.banking.schema.AccountResponseDto;
+import com.banking.schema.AccountUpdateDto;
 import com.banking.service.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

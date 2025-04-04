@@ -1,4 +1,4 @@
-package com.banking.dto;
+package com.banking.schema;
 
 
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PaymentHistoryDto {
     private LocalDate paymentDate;
-    private String fromAccount;
-    private String toAccount;
+    private String fromAccountNumber;
+    private String toAccountNumber;
     private BigDecimal amount;
 }

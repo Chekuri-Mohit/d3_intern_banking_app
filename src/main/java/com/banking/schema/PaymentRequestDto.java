@@ -1,4 +1,4 @@
-package com.banking.dto;
+package com.banking.schema;
 
 import com.banking.enums.PayeeType;
 import lombok.AllArgsConstructor;
@@ -11,17 +11,12 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentDetailDto {
-    private long id;
+public class PaymentRequestDto {
     private String fromAccountNumber;
     private String toAccountNumber;
     private BigDecimal amount;
-    private String status;
+    public PayeeType payeeType;
     private LocalDate paymentDate;
     private String note;
-    private PayeeType payeeType;
-
-
-    public PaymentDetailDto(Long id, String accountNumber, String accountNumber1, LocalDate paymentDate, BigDecimal amount, String status, PayeeType payeeType, String note) {
-    }
+    private String status;
 }

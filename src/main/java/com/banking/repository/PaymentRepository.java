@@ -1,7 +1,7 @@
 package com.banking.repository;
 
 
-import com.banking.dto.PaymentHistoryDto;
+import com.banking.schema.PaymentHistoryDto;
 import com.banking.model.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +15,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
 
     @Query("""
-            SELECT new com.banking.dto.PaymentHistoryDto(
+            SELECT new com.banking.schema.PaymentHistoryDto(
                 p.paymentDate,
                 fromAcc.accountNumber,
                 toAcc.accountNumber,

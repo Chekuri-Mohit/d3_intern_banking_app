@@ -1,7 +1,8 @@
 package com.banking.service;
 
-import com.banking.dto.ForgotPasswordDto;
-import com.banking.dto.SecurityQuestionDto;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.ForgotPasswordDto;
+import com.banking.schema.SecurityQuestionDto;
 import com.banking.model.User;
 import com.banking.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -29,7 +30,7 @@ public class ForgotPasswordService {
         return user;
     }
 
-    public void forgotPassword(@Valid ForgotPasswordDto forgotPasswordDto) {
+    public ErrorResponse forgotPassword(@Valid ForgotPasswordDto forgotPasswordDto) {
        User user = validateUser(forgotPasswordDto.getUsername(), forgotPasswordDto.getEmail());
         if(!user.getSecurityAnswer().equals(forgotPasswordDto.getSecurityAnswer())){
             throw new RuntimeException("Incorrect Security Answer");
@@ -40,6 +41,7 @@ public class ForgotPasswordService {
             throw new RuntimeException("Passwords do not match");
         }
         userRepository.save(user);
+        return new ErrorResponse(true,"Successfully changed password");
 
     }
 

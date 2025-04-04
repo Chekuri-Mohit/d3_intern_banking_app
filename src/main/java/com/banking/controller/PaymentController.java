@@ -1,8 +1,8 @@
 package com.banking.controller;
 
-import com.banking.dto.PaymentHistoryDto;
-import com.banking.dto.PaymentRequestDto;
-import com.banking.dto.PaymentResponseDto;
+import com.banking.schema.PaymentHistoryDto;
+import com.banking.schema.PaymentRequestDto;
+import com.banking.schema.PaymentResponseDto;
 import com.banking.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

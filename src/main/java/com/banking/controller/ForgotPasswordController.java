@@ -1,8 +1,10 @@
 package com.banking.controller;
 
-import com.banking.dto.ForgotPasswordDto;
-import com.banking.dto.SecurityQuestionDto;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.ForgotPasswordDto;
+import com.banking.schema.SecurityQuestionDto;
 import com.banking.service.ForgotPasswordService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,15 +23,15 @@ public class ForgotPasswordController {
     public ForgotPasswordController(ForgotPasswordService forgotPasswordService) {
         this.forgotPasswordService = forgotPasswordService;
     }
-    @GetMapping("/getQ")
-    public String getSecurityQuestion(@RequestBody SecurityQuestionDto securityQuestionDto) {
+    @GetMapping("/get-security-question")
+    public String getSecurityQuestion(@Valid @RequestBody SecurityQuestionDto securityQuestionDto) {
        return forgotPasswordService.getSecurityQuestion(securityQuestionDto);
     }
 
 
-    @PostMapping("/forgotPassword")
-    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto) {
-        forgotPasswordService.forgotPassword(forgotPasswordDto);
-        return ResponseEntity.ok("Forgot Password Sent");
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ErrorResponse> forgotPassword(@Valid @RequestBody ForgotPasswordDto forgotPasswordDto) {
+        return ResponseEntity.ok(forgotPasswordService.forgotPassword(forgotPasswordDto));
+
     }
 }
