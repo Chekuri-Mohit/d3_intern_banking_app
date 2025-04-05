@@ -1,9 +1,9 @@
 package com.banking.controller;
 
-import com.banking.dto.JwtResponse;
-import com.banking.dto.LoginRequest;
-import com.banking.dto.SignupRequest;
-import com.banking.dto.UnlockDto;
+import com.banking.schema.JwtResponse;
+import com.banking.schema.LoginRequest;
+import com.banking.schema.SignupRequest;
+import com.banking.schema.UnlockDto;
 import com.banking.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

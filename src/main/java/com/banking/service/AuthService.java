@@ -1,8 +1,8 @@
 package com.banking.service;
 
-import com.banking.dto.JwtResponse;
-import com.banking.dto.LoginRequest;
-import com.banking.dto.SignupRequest;
+import com.banking.schema.JwtResponse;
+import com.banking.schema.LoginRequest;
+import com.banking.schema.SignupRequest;
 import com.banking.mapper.AuthMapper;
 import com.banking.model.User;
 import com.banking.repository.UserRepository;
@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 //
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -67,10 +71,17 @@ public class AuthService {
         }
         user.setLoginAttempts(0);
         LocalDateTime lastLogin = user.getLastLoginDate();
-        user.setLastLoginDate(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        user.setLastLoginDate(now);
         userRepository.save(user);
         String token = jwtUtils.generateToken(user.getUserName());
-        return new JwtResponse(token, "Welcome " + user.getUserName(), lastLogin);
+        String formattedLastLogin="";
+        if(lastLogin != null) {
+            ZonedDateTime zonedDateTime = lastLogin.atZone(ZoneId.of("Asia/Kolkata"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy 'at' h:mm a z", Locale.ENGLISH);
+            formattedLastLogin = zonedDateTime.format(formatter);
+        }
+        return new JwtResponse(token, "Welcome " + user.getUserName(), formattedLastLogin);
     }
 
     public boolean unlockUser(String userName) {
