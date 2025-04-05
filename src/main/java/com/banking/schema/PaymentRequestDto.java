@@ -19,4 +19,5 @@ public class PaymentRequestDto {
     private LocalDate paymentDate;
     private String note;
     private String status;
+
 }

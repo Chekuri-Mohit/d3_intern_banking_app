@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -39,10 +38,10 @@ public class PaymentController {
     }
 
     @GetMapping("/history")
-    public ResponseEntity<Map<LocalDate, List<PaymentHistoryDto>>> getPaymentHistoryByUserId() {
+    public ResponseEntity<Map<String, List<PaymentHistoryDto>>> getPaymentHistoryByUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Map<LocalDate, List<PaymentHistoryDto>> history = paymentService.getPaymentHistoryGroupedByDate(username);
+        Map<String, List<PaymentHistoryDto>> history = paymentService.getPaymentHistoryGroupedByDate(username);
         return ResponseEntity.ok(history);
     }
 }

@@ -31,7 +31,6 @@ public class AuthController {
     public ResponseEntity<ErrorResponse> signup(@Valid @RequestBody SignupRequest request) {
         return ResponseEntity.ok(authService.signup(request));
     }
-
     @PostMapping("/login")
     public JwtResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
