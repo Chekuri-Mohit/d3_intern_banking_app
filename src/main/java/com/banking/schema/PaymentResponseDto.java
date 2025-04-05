@@ -19,7 +19,6 @@ public class PaymentResponseDto {
     private String status;
     private PayeeType payeeType;
     private String note;
-
     public PaymentResponseDto(long id, long fromAccountId, long toAccountId, LocalDate paymentDate, BigDecimal amount, String status, PayeeType payeeType, String note) {
         this.id = id;
         this.fromAccountId = fromAccountId;

@@ -83,7 +83,6 @@ public class AuthService {
         }
         return new JwtResponse(token, "Welcome " + user.getUserName(), formattedLastLogin);
     }
-
     public boolean unlockUser(String userName) {
         Optional<User> users = userRepository.findByuserName(userName);
         if (users.isEmpty()) {

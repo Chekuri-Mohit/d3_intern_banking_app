@@ -112,7 +112,6 @@ public class PaymentService {
         }
         return sorted;
     }
-
     private String maskAccountNumber(String accountNumber) {
         if(accountNumber==null || accountNumber.length()<4) return "****";
         return "****" +  accountNumber.substring(accountNumber.length()-4);

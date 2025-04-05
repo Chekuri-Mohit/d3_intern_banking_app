@@ -31,7 +31,6 @@ public class AuthController {
         System.out.println("sign up success");
         return authService.signup(request);
     }
-
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
         System.out.println("login success");
