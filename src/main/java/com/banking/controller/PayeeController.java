@@ -1,7 +1,8 @@
 package com.banking.controller;
 
-import com.banking.dto.PayeeRequestDto;
-import com.banking.dto.PayeeResponseDto;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.PayeeRequestDto;
+import com.banking.schema.PayeeResponseDto;
 import com.banking.service.PayeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +53,7 @@ public class PayeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePayee(@PathVariable Long id) {
-        payeeService.deletePayee(id);
-        return ResponseEntity.ok("Payee deleted successfully.");
+    public ResponseEntity<ErrorResponse> deletePayee(@PathVariable Long id) {
+        return ResponseEntity.ok(payeeService.deletePayee(id));
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -62,6 +63,9 @@ public class PaymentService {
         // Check if the sender has sufficient balance
         if (fromAccount.getBalance().compareTo(dto.getAmount()) < 0) {
             throw new RuntimeException("Insufficient balance");
+        }
+        if(dto.getAmount().equals(BigDecimal.ZERO)){
+            throw new RuntimeException("Cannot pay zero amount");
         }
 
         // Update balances with BigDecimal for precision

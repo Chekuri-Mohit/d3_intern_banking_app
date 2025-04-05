@@ -1,6 +1,6 @@
 package com.banking.mapper;
 
-import com.banking.dto.UserProfileDto;
+import com.banking.schema.UserProfileDto;
 import com.banking.model.User;
 import org.mapstruct.Mapper;
 

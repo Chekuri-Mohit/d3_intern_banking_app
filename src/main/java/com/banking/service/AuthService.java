@@ -1,5 +1,6 @@
 package com.banking.service;
 
+import com.banking.schema.ErrorResponse;
 import com.banking.schema.JwtResponse;
 import com.banking.schema.LoginRequest;
 import com.banking.schema.SignupRequest;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-//
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -36,7 +36,7 @@ public class AuthService {
         this.authMapper = authMapper;
     }
 
-    public String signup(@Valid SignupRequest request) {
+    public ErrorResponse signup(@Valid SignupRequest request) {
         Optional<User> users = userRepository.findByuserName(request.getUserName());
         if (users.isPresent()) {
             throw new RuntimeException("Username Already Exists");
@@ -45,7 +45,7 @@ public class AuthService {
         User user = authMapper.SignupRequesttoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
-        return "signup successful";
+        return new ErrorResponse(true,"Signup Successful");
     }
 
     public JwtResponse login(LoginRequest request) {
