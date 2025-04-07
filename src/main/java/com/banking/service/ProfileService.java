@@ -31,11 +31,26 @@ public class ProfileService {
         if (userProfileDto.getMiddleName() != null && !userProfileDto.getMiddleName().isBlank()) {
             user.setMiddleName(userProfileDto.getMiddleName());
         }
-        if (userProfileDto.getAddress() != null && !userProfileDto.getAddress().isBlank()) {
-            user.setAddress(userProfileDto.getAddress());
+        if (userProfileDto.getAddressLine1() != null && !userProfileDto.getAddressLine1().isBlank()) {
+            user.setAddressLine1(userProfileDto.getAddressLine1());
+        }
+        if (userProfileDto.getAddressLine2() != null && !userProfileDto.getAddressLine2().isBlank()) {
+            user.setAddressLine2(userProfileDto.getAddressLine2());
+        }
+        if (userProfileDto.getAddressLine3() != null && !userProfileDto.getAddressLine3().isBlank()) {
+            user.setAddressLine1(userProfileDto.getAddressLine1());
+        }
+        if (userProfileDto.getAddressLine3() != null && !userProfileDto.getAddressLine3().isBlank()) {
+            user.setAddressLine1(userProfileDto.getAddressLine1());
         }
         if (userProfileDto.getCity() != null && !userProfileDto.getCity().isBlank()) {
             user.setCity(userProfileDto.getCity());
+        }
+        if (userProfileDto.getCountry() != null && !userProfileDto.getCountry().isBlank()) {
+            user.setCountry(userProfileDto.getCountry());
+        }
+        if (userProfileDto.getZipCode() != null && !userProfileDto.getZipCode().isBlank()) {
+            user.setZipCode(userProfileDto.getZipCode());
         }
         if (userProfileDto.getState() != null && !userProfileDto.getState().isBlank()) {
             user.setState(userProfileDto.getState());
