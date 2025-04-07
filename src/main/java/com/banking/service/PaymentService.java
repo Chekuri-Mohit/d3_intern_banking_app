@@ -2,19 +2,19 @@ package com.banking.service;
 
 import com.banking.mapper.PaymentMapper;
 import com.banking.model.Account;
+import com.banking.model.Payee;
 import com.banking.model.Payment;
 import com.banking.model.User;
 import com.banking.repository.AccountRepo;
+import com.banking.repository.PayeeRepository;
 import com.banking.repository.PaymentRepository;
 import com.banking.repository.UserRepository;
 import com.banking.schema.PaymentHistoryDto;
 import com.banking.schema.PaymentRequestDto;
 import com.banking.schema.PaymentResponseDto;
-import com.banking.security.JwtUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,13 +36,16 @@ public class PaymentService {
     private final AccountRepo accountRepository;
     private final UserRepository userRepository;
     private final PaymentMapper paymentMapper;
+    private final PayeeRepository payeeRepository;
+
 
     @Autowired
-    public PaymentService(PaymentRepository paymentRepository, AccountRepo accountRepository, UserRepository userRepository, PaymentMapper paymentMapper) {
+    public PaymentService(PaymentRepository paymentRepository, AccountRepo accountRepository, UserRepository userRepository, PaymentMapper paymentMapper, PayeeRepository payeeRepository) {
         this.paymentRepository = paymentRepository;
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
         this.paymentMapper = paymentMapper;
+        this.payeeRepository = payeeRepository;
     }
 
     // Create a new payment
@@ -99,6 +103,9 @@ public class PaymentService {
             if(toAccount!=null) {
                 dto.setToAccountName(toAccount.getAccountName());
                 dto.setMaskedToAccountNumber(maskAccountNumber(toAccount.getAccountNumber()));
+                Optional<Payee> payeeOpt = payeeRepository.findByUserIdAndAccountNumber(user.getId(), toAccount.getAccountNumber());
+                String payeeName = payeeOpt.map(Payee::getName).orElse(toAccount.getAccountName());
+                dto.setPayeeName(payeeName);
             }
         }
         Map<String, List<PaymentHistoryDto>> grouped = history.stream().collect(Collectors.groupingBy(PaymentHistoryDto::getFormattedPaymentDate, LinkedHashMap::new, Collectors.toList()));
