@@ -25,6 +25,7 @@ public class PaymentHistoryDto {
     private long fromAccountId;
     private long toAccountId;
     private String payeeName;
+
     public PaymentHistoryDto(LocalDate paymentDate, String fromAccount, String toAccount, BigDecimal amount, String fromAccountName, String toAccountName, String maskedFromAccountNumber, String maskedToAccountNumber, long fromAccountId, long toAccountId) {
         this.formattedPaymentDate = formatDate(paymentDate);
         this.fromAccount = fromAccount;
