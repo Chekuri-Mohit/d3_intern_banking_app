@@ -18,6 +18,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 jwt.secret: your256bitsecretyour256bitsecretiuybuyvbuybuyb
+jwt.expirationTime: 3600000
 
 
 
