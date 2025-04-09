@@ -1,7 +1,8 @@
 package com.banking.service;
 
-import com.banking.dto.PayeeRequestDto;
-import com.banking.dto.PayeeResponseDto;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.PayeeRequestDto;
+import com.banking.schema.PayeeResponseDto;
 import com.banking.mapper.Payee2Mapper;
 import com.banking.model.Payee;
 import com.banking.model.User;
@@ -33,11 +34,11 @@ public class PayeeService {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer userId = user.getId();
-        if (!accountRepo.existsByAccountNumber(payeeRequestDto.getAccountNumber())) {
-            throw new RuntimeException("Account number not found " + payeeRequestDto.getAccountNumber());
-        }
         if (payeeRepository.existsByUser_IdAndAccountNumber(userId, payeeRequestDto.getAccountNumber())) {
             throw new RuntimeException("Account number already exists " + payeeRequestDto.getAccountNumber());
+        }
+        if(accountRepo.existsByUser_IdAndAccountNumber(userId, payeeRequestDto.getAccountNumber())) {
+            throw new RuntimeException("Cannot create payee with your own account " + payeeRequestDto.getAccountNumber());
         }
         Payee payee = payeeMapper.toEntity(payeeRequestDto);
         payee.setUser(user);
@@ -103,10 +104,11 @@ public class PayeeService {
 
     }
 
-    public void deletePayee(Long id) {
+    public ErrorResponse deletePayee(Long id) {
         if (!payeeRepository.existsById(id)) {
             throw new RuntimeException("Payee not found with id " + id);
         }
         payeeRepository.deleteById(id);
+        return new ErrorResponse(true,"Deleted Payee with id " + id);
     }
 }

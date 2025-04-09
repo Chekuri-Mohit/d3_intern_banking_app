@@ -1,7 +1,7 @@
 package com.banking.mapper;
 
-import com.banking.dto.PayeeRequestDto;
-import com.banking.dto.PayeeResponseDto;
+import com.banking.schema.PayeeRequestDto;
+import com.banking.schema.PayeeResponseDto;
 import com.banking.model.Payee;
 import org.mapstruct.Mapper;
 

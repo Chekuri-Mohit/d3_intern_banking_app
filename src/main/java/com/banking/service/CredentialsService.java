@@ -1,8 +1,9 @@
 package com.banking.service;
 
-import com.banking.dto.PasswordUpdateDto;
-import com.banking.dto.SecurityUpdateDto;
-import com.banking.dto.UsernameUpdateDto;
+import com.banking.schema.ErrorResponse;
+import com.banking.schema.PasswordUpdateDto;
+import com.banking.schema.SecurityUpdateDto;
+import com.banking.schema.UsernameUpdateDto;
 import com.banking.model.User;
 import com.banking.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -23,7 +24,7 @@ public class CredentialsService {
         this.userRepository = userRepository;
     }
 
-    public void updatePassword(String username, @Valid PasswordUpdateDto passwordUpdateDto) {
+    public ErrorResponse updatePassword(String username, @Valid PasswordUpdateDto passwordUpdateDto) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         if (!passwordEncoder.matches(passwordUpdateDto.getCurrentPassword(), user.getPassword())) {
             throw new RuntimeException("Incorrect password");
@@ -35,9 +36,10 @@ public class CredentialsService {
         }
         user.setPassword(passwordEncoder.encode(passwordUpdateDto.getNewPassword()));
         userRepository.save(user);
+        return new ErrorResponse(true,"Updated password successfully");
     }
 
-    public void updateUsername(String username, @Valid UsernameUpdateDto usernameUpdateDto) {
+    public ErrorResponse updateUsername(String username, @Valid UsernameUpdateDto usernameUpdateDto) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         if (!passwordEncoder.matches(usernameUpdateDto.getCurrentPassword(), user.getPassword())) {
             throw new RuntimeException("Incorrect password");
@@ -47,13 +49,14 @@ public class CredentialsService {
         }
         user.setUserName(usernameUpdateDto.getNewUsername());
         userRepository.save(user);
-
+        return new ErrorResponse(true,"Updated username successfully");
     }
 
-    public void updateSecurityQA(String username, @Valid SecurityUpdateDto securityUpdateDto) {
+    public ErrorResponse updateSecurityQA(String username, @Valid SecurityUpdateDto securityUpdateDto) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         user.setSecurityQuestion(securityUpdateDto.getSecurityQuestion());
         user.setSecurityAnswer(securityUpdateDto.getSecurityAnswer());
         userRepository.save(user);
+        return new ErrorResponse(true,"Updated Security question and answer successfully");
     }
 }
