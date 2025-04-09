@@ -61,8 +61,6 @@ public class PaymentService {
         if(!UserID.equals(fromAccount.getUser().getId())) {
             throw new RuntimeException("Incorrect FROM account");
         }
-        Account toAccount = accountRepository.findByAccountNumber(dto.getToAccountNumber())
-            .orElseThrow(() -> new RuntimeException("Receiver account not found"));
 
         // Check if the sender has sufficient balance
         if (fromAccount.getBalance().compareTo(dto.getAmount()) < 0) {
@@ -74,10 +72,21 @@ public class PaymentService {
 
         // Update balances with BigDecimal for precision
         fromAccount.setBalance(fromAccount.getBalance().subtract(dto.getAmount()));
-        toAccount.setBalance(toAccount.getBalance().add(dto.getAmount()));
+        accountRepository.save(fromAccount);
+        Account toAccount = null;
+        try {
+            toAccount = accountRepository.findByAccountNumber(dto.getFromAccountNumber())
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+
+            toAccount.setBalance(toAccount.getBalance().add(dto.getAmount()));
+            accountRepository.save(toAccount);
+        }
+        catch(RuntimeException e) {
+            
+        }
 
         // Save accounts
-        accountRepository.save(fromAccount);
+
         accountRepository.save(toAccount);
 
         // Create and save payment
