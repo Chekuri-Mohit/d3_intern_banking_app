@@ -34,9 +34,6 @@ public class PayeeService {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer userId = user.getId();
-        if (!accountRepo.existsByAccountNumber(payeeRequestDto.getAccountNumber())) {
-            throw new RuntimeException("Account number not found " + payeeRequestDto.getAccountNumber());
-        }
         if (payeeRepository.existsByUser_IdAndAccountNumber(userId, payeeRequestDto.getAccountNumber())) {
             throw new RuntimeException("Account number already exists " + payeeRequestDto.getAccountNumber());
         }

@@ -28,20 +28,20 @@ public class ProfileService {
         if (userProfileDto.getLastName() != null && !userProfileDto.getLastName().isBlank()) {
             user.setLastName(userProfileDto.getLastName());
         }
-        if (userProfileDto.getMiddleName() != null && !userProfileDto.getMiddleName().isBlank()) {
+        if (userProfileDto.getMiddleName() != null) {
             user.setMiddleName(userProfileDto.getMiddleName());
         }
-        if (userProfileDto.getAddressLine1() != null && !userProfileDto.getAddressLine1().isBlank()) {
+        if (userProfileDto.getAddressLine1() != null) {
             user.setAddressLine1(userProfileDto.getAddressLine1());
         }
-        if (userProfileDto.getAddressLine2() != null && !userProfileDto.getAddressLine2().isBlank()) {
+        if (userProfileDto.getAddressLine2() != null) {
             user.setAddressLine2(userProfileDto.getAddressLine2());
         }
-        if (userProfileDto.getAddressLine3() != null && !userProfileDto.getAddressLine3().isBlank()) {
-            user.setAddressLine1(userProfileDto.getAddressLine1());
+        if (userProfileDto.getAddressLine3() != null) {
+            user.setAddressLine3(userProfileDto.getAddressLine3());
         }
-        if (userProfileDto.getAddressLine3() != null && !userProfileDto.getAddressLine3().isBlank()) {
-            user.setAddressLine1(userProfileDto.getAddressLine1());
+        if (userProfileDto.getAddressLine4() != null) {
+            user.setAddressLine4(userProfileDto.getAddressLine4());
         }
         if (userProfileDto.getCity() != null && !userProfileDto.getCity().isBlank()) {
             user.setCity(userProfileDto.getCity());

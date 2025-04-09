@@ -21,6 +21,6 @@ public interface AccountMapper {
     List<AccountResponseDto> toAccountResponseDtoList(List<Account> accounts);
 
     default String generateAccountNumber() {
-        return java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        return java.util.UUID.randomUUID().toString().replace("-","").substring(0, 16).toUpperCase();
     }
 }
