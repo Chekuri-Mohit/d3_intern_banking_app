@@ -37,6 +37,9 @@ public class PayeeService {
         if (payeeRepository.existsByUser_IdAndAccountNumber(userId, payeeRequestDto.getAccountNumber())) {
             throw new RuntimeException("Account number already exists " + payeeRequestDto.getAccountNumber());
         }
+        if(accountRepo.existsByUser_IdAndAccountNumber(userId, payeeRequestDto.getAccountNumber())) {
+            throw new RuntimeException("Cannot create payee with your own account " + payeeRequestDto.getAccountNumber());
+        }
         Payee payee = payeeMapper.toEntity(payeeRequestDto);
         payee.setUser(user);
         Payee savedPayee = payeeRepository.save(payee);
