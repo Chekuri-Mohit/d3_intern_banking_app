@@ -16,7 +16,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -82,7 +81,7 @@ public class PaymentService {
             accountRepository.save(toAccount);
         }
         catch(RuntimeException e) {
-            
+
         }
 
         // Save accounts
