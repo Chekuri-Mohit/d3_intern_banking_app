@@ -16,7 +16,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -60,7 +62,6 @@ public class PaymentService {
         if(!UserID.equals(fromAccount.getUser().getId())) {
             throw new RuntimeException("Incorrect FROM account");
         }
-
         // Check if the sender has sufficient balance
         if (fromAccount.getBalance().compareTo(dto.getAmount()) < 0) {
             throw new RuntimeException("Insufficient balance");
@@ -72,30 +73,23 @@ public class PaymentService {
         // Update balances with BigDecimal for precision
         fromAccount.setBalance(fromAccount.getBalance().subtract(dto.getAmount()));
         accountRepository.save(fromAccount);
-        Account toAccount = null;
-        try {
-            toAccount = accountRepository.findByAccountNumber(dto.getFromAccountNumber())
-                .orElseThrow(() -> new RuntimeException("Sender account not found"));
-
-            toAccount.setBalance(toAccount.getBalance().add(dto.getAmount()));
-            accountRepository.save(toAccount);
-        }
-        catch(RuntimeException e) {
-
-        }
-
-        // Save accounts
-
-        accountRepository.save(toAccount);
-
-        // Create and save payment
         Payment payment = paymentMapper.toEntity(dto);
         payment.setFromAccount(fromAccount);
-        payment.setToAccount(toAccount);
+        payment.setPaymentDate(dto.getPaymentDate());
 
-        paymentRepository.save(payment);
+        Optional<Account> optionalToAccount = accountRepository.findByAccountNumber(dto.getToAccountNumber());
 
-        return paymentMapper.toDto(payment);
+        if (optionalToAccount.isPresent()) {
+            Account toAccount = optionalToAccount.get();
+            toAccount.setBalance(toAccount.getBalance().add(dto.getAmount()));
+            accountRepository.save(toAccount);
+            payment.setToAccount(toAccount);
+            paymentRepository.save(payment);
+            return paymentMapper.toDto(payment);
+        }
+        else{
+            return null;
+        }
     }
 
     public Map<String, List<PaymentHistoryDto>> getPaymentHistoryGroupedByDate(String username) {
