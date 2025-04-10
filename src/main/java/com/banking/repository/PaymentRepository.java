@@ -20,7 +20,9 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             fromAcc.accountNumber,
             toAcc.accountNumber,
             p.amount,
-            '', '', '', '', fromAcc.id, toAcc.id
+            '', '', '', '',
+            fromAcc.id,
+            toAcc.id
         )
         FROM Payment p
         JOIN p.fromAccount fromAcc

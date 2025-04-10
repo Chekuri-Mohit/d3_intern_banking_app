@@ -36,7 +36,7 @@ public class Payment {
     private Account fromAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_account_id", nullable = false)
+    @JoinColumn(name = "to_account_id")
     private Account toAccount;
 
     @Enumerated(EnumType.STRING)
