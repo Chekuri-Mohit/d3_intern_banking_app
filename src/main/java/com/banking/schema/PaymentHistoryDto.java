@@ -33,6 +33,7 @@ public class PaymentHistoryDto {
         this.payeeAccountNumber = payeeAccountNumber;
         this.fromAccountType = fromAccountType;
     }
+
     private String formatDate(LocalDate paymentDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH);
         return paymentDate.format(formatter);

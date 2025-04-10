@@ -38,7 +38,6 @@ public class PaymentService {
     private final PaymentMapper paymentMapper;
     private final PayeeRepository payeeRepository;
 
-
     @Autowired
     public PaymentService(PaymentRepository paymentRepository, AccountRepo accountRepository, UserRepository userRepository, PaymentMapper paymentMapper, PayeeRepository payeeRepository) {
         this.paymentRepository = paymentRepository;

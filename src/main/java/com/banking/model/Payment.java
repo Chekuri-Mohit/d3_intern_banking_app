@@ -32,11 +32,11 @@ public class Payment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_account_id", nullable = false)
+    @JoinColumn(name = "from_account_id")
     private Account fromAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_account_id", nullable = false)
+    @JoinColumn(name = "to_account_id")
     private Account toAccount;
 
     @Enumerated(EnumType.STRING)
@@ -54,4 +54,8 @@ public class Payment {
 
     @Column(name = "status", nullable = false)
     private String status = "PENDING";
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payee_id", nullable=false)
+    private Payee payee;
 }

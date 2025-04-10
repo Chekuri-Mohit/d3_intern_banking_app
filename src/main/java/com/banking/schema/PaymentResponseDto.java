@@ -18,6 +18,7 @@ public class PaymentResponseDto {
     private PayeeType payeeType;
     private String note;
 
+
     public PaymentResponseDto(long id,LocalDate paymentDate, BigDecimal amount, String status, PayeeType payeeType, String note) {
         this.id = id;
         this.paymentDate = paymentDate;
