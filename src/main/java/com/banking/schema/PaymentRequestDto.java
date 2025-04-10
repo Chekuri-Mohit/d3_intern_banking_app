@@ -12,8 +12,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentRequestDto {
-    private String fromAccountNumber;
-    private String toAccountNumber;
+    private Long fromAccountId;
+    private Long toPayeeId;
     private BigDecimal amount;
     public PayeeType payeeType;
     private LocalDate paymentDate;
