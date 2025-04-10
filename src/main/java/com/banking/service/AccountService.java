@@ -46,11 +46,9 @@ public class AccountService {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer UserID = user.getId();
-
         Optional<List<Account>> accounts = accountRepo.findByUserId(UserID);
         List<List<AccountResponseDto>> collect = accounts.stream().map(accountMapper::toAccountResponseDtoList).collect(Collectors.toList());
         return collect;
-
     }
 
 
