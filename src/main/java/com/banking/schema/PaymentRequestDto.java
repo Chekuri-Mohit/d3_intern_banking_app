@@ -12,12 +12,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentRequestDto {
-    private String fromAccountNumber;
-    private String toAccountNumber;
+    private Long fromAccountId;
+    private Long payeeId;
     private BigDecimal amount;
     public PayeeType payeeType;
     private LocalDate paymentDate;
     private String note;
     private String status;
-
 }

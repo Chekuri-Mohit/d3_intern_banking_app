@@ -13,21 +13,18 @@ import java.util.List;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
+    @Query("SELECT new com.banking.schema.PaymentHistoryDto(" +
+        "p.paymentDate, " +
+        "fa.accountName, " +
+        "fa.accountNumber, " +
+        "p.amount, " +
+        "pa.name, " +
+        "pa.accountNumber, " +
+        "fa.accountType) " +
+        "FROM Payment p " +
+        "JOIN p.fromAccount fa " +
+        "JOIN p.payee pa " +
+        "WHERE fa.user.id = :userId")
+    List<PaymentHistoryDto> findPaymentHistoryByUserId(Long userId);
 
-    @Query("""
-        SELECT new com.banking.schema.PaymentHistoryDto(
-            p.paymentDate,
-            fromAcc.accountNumber,
-            toAcc.accountNumber,
-            p.amount,
-            '', '', '', '', fromAcc.id, toAcc.id
-        )
-        FROM Payment p
-        JOIN p.fromAccount fromAcc
-        JOIN p.toAccount toAcc
-        JOIN fromAcc.user u
-        WHERE u.id = :userId
-        ORDER BY p.paymentDate DESC
-    """)
-    List<PaymentHistoryDto> findPaymentHistoryByUserId(@Param("userId") Long userId);
 }

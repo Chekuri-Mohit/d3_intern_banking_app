@@ -1,6 +1,8 @@
 package com.banking.schema;
 
 
+import com.banking.enums.AccountType;
+import com.banking.model.Account;
 import com.banking.model.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,29 +17,21 @@ import java.util.Locale;
 @AllArgsConstructor
 public class PaymentHistoryDto {
     private String formattedPaymentDate;
-    private String fromAccount;
-    private String toAccount;
-    private BigDecimal amount;
     private String fromAccountName;
-    private String toAccountName;
-    private String maskedFromAccountNumber;
-    private String maskedToAccountNumber;
-    private long fromAccountId;
-    private long toAccountId;
+    private String fromAccountNumber;
+    private BigDecimal amount;
     private String payeeName;
+    private String payeeAccountNumber;
+    private AccountType fromAccountType;
 
-    public PaymentHistoryDto(LocalDate paymentDate, String fromAccount, String toAccount, BigDecimal amount, String fromAccountName, String toAccountName, String maskedFromAccountNumber, String maskedToAccountNumber, long fromAccountId, long toAccountId) {
+    public PaymentHistoryDto(LocalDate paymentDate, String fromAccountName, String fromAccountNumber, BigDecimal amount, String payeeName, String payeeAccountNumber, AccountType fromAccountType) {
         this.formattedPaymentDate = formatDate(paymentDate);
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
-        this.amount = amount;
         this.fromAccountName = fromAccountName;
-        this.toAccountName = toAccountName;
-        this.maskedFromAccountNumber = maskedFromAccountNumber;
-        this.maskedToAccountNumber = maskedToAccountNumber;
-        this.fromAccountId = fromAccountId;
-        this.toAccountId = toAccountId;
-
+        this.fromAccountNumber =fromAccountNumber;
+        this.amount = amount;
+        this.payeeName = payeeName;
+        this.payeeAccountNumber = payeeAccountNumber;
+        this.fromAccountType = fromAccountType;
     }
     private String formatDate(LocalDate paymentDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH);
