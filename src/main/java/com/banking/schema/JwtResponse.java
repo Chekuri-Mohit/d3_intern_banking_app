@@ -1,4 +1,4 @@
-package com.banking.dto;
+package com.banking.schema;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 public class JwtResponse {
     private String token;
     private String message;
-    private LocalDateTime lastLogin;
+    private String lastLogin;
 
     public JwtResponse(String messagen) {
         this.message = messagen;
     }
 
-    public JwtResponse(String token, String message, LocalDateTime lastLogin) {
+    public JwtResponse(String token, String message, String lastLogin) {
         this.token = token;
         this.message = message;
         this.lastLogin = lastLogin;
