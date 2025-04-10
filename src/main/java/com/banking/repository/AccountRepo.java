@@ -17,5 +17,7 @@ public interface AccountRepo extends JpaRepository<Account, Long> {
     Optional<Account> findByAccountNumber(@NotNull(message = "Account number is mandatory") String accountNumber);
 
     boolean existsByAccountNumber(String accountNumber);
+    boolean existsByUser_IdAndAccountNumber(Integer userId, String accountNumber);
 
+    Optional<Account> findById(Long id);
 }

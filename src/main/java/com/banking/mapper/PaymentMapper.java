@@ -10,4 +10,5 @@ import org.mapstruct.Mapping;
 public interface PaymentMapper {
     PaymentResponseDto toDto(Payment payment);
     Payment toEntity(PaymentRequestDto dto);
+
 }

@@ -21,16 +21,16 @@ public class PaymentHistoryDto {
     private String fromAccountNumber;
     private BigDecimal amount;
     private String payeeName;
-    private String payeeAccountNumber;
+    private String toPayeeAccountNumber;
     private AccountType fromAccountType;
 
-    public PaymentHistoryDto(LocalDate paymentDate, String fromAccountName, String fromAccountNumber, BigDecimal amount, String payeeName, String payeeAccountNumber, AccountType fromAccountType) {
+    public PaymentHistoryDto(LocalDate paymentDate, String fromAccountName, String fromAccountNumber, BigDecimal amount, String payeeName, String toPayeeAccountNumber, AccountType fromAccountType) {
         this.formattedPaymentDate = formatDate(paymentDate);
         this.fromAccountName = fromAccountName;
         this.fromAccountNumber =fromAccountNumber;
         this.amount = amount;
         this.payeeName = payeeName;
-        this.payeeAccountNumber = payeeAccountNumber;
+        this.toPayeeAccountNumber = toPayeeAccountNumber;
         this.fromAccountType = fromAccountType;
     }
 

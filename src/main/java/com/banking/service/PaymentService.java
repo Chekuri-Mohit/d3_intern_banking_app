@@ -64,7 +64,7 @@ public class PaymentService {
             throw new RuntimeException("Insufficient balance");
         }
         // Fetch Payee
-        Payee payee = payeeRepository.findById(dto.getPayeeId()).orElseThrow(() -> new RuntimeException("Payee not found"));
+        Payee payee = payeeRepository.findById(dto.getToPayeeId()).orElseThrow(() -> new RuntimeException("Payee not found"));
         String toAccountNumber=payee.getAccountNumber();
 
         // Update balances with BigDecimal for precision

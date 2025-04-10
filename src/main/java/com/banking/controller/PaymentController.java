@@ -34,7 +34,6 @@ public class PaymentController {
         this.paymentService = paymentService;
         this.userRepository = userRepository;
     }
-
     @PostMapping("/make")
     public ResponseEntity<PaymentResponseDto> makePayment(@RequestBody PaymentRequestDto request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PaymentRequestDto {
     private Long fromAccountId;
-    private Long payeeId;
+    private Long toPayeeId;
     private BigDecimal amount;
     public PayeeType payeeType;
     private LocalDate paymentDate;

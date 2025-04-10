@@ -1,8 +1,8 @@
 package com.banking.service;
 
-import com.banking.dto.AccountRequestDto;
-import com.banking.dto.AccountResponseDto;
-import com.banking.dto.AccountUpdateDto;
+import com.banking.schema.AccountRequestDto;
+import com.banking.schema.AccountResponseDto;
+import com.banking.schema.AccountUpdateDto;
 import com.banking.mapper.AccountMapper;
 import com.banking.model.Account;
 import com.banking.model.User;

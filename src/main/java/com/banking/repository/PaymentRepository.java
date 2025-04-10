@@ -12,7 +12,6 @@ import java.util.List;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
-
     @Query("SELECT new com.banking.schema.PaymentHistoryDto(" +
         "p.paymentDate, " +
         "fa.accountName, " +
