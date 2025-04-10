@@ -1,4 +1,4 @@
-package com.banking.dto;
+package com.banking.schema;
 
 import com.banking.enums.AccountType;
 import lombok.Data;
@@ -10,6 +10,6 @@ public class AccountResponseDto {
     private String accountName;
     private AccountType accountType;
     private BigDecimal balance;
+    private Long id;
     private String accountNumber;
-
 }
