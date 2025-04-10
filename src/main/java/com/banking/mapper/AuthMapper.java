@@ -2,7 +2,7 @@ package com.banking.mapper;
 
 //
 
-import com.banking.dto.SignupRequest;
+import com.banking.schema.SignupRequest;
 import com.banking.model.User;
 import org.mapstruct.Mapper;
 
