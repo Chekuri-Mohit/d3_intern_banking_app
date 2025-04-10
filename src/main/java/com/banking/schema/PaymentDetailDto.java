@@ -1,4 +1,4 @@
-package com.banking.dto;
+package com.banking.schema;
 
 import com.banking.enums.PayeeType;
 import lombok.AllArgsConstructor;

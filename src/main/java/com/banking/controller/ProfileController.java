@@ -1,7 +1,8 @@
 package com.banking.controller;
 
-import com.banking.dto.UserProfileDto;
+import com.banking.schema.UserProfileDto;
 import com.banking.service.ProfileService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -33,7 +34,7 @@ public class ProfileController {
     }
 
     @PutMapping("/update")
-    public void updateProfile(@RequestBody UserProfileDto userProfileDto) {
+    public void updateProfile(@Valid @RequestBody UserProfileDto userProfileDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         profileService.updateProfile(username, userProfileDto);

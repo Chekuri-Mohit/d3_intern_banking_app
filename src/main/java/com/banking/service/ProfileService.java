@@ -1,6 +1,6 @@
 package com.banking.service;
 
-import com.banking.dto.UserProfileDto;
+import com.banking.schema.UserProfileDto;
 import com.banking.mapper.ProfileMapper;
 import com.banking.model.User;
 import com.banking.repository.UserRepository;
@@ -28,14 +28,29 @@ public class ProfileService {
         if (userProfileDto.getLastName() != null && !userProfileDto.getLastName().isBlank()) {
             user.setLastName(userProfileDto.getLastName());
         }
-        if (userProfileDto.getMiddleName() != null && !userProfileDto.getMiddleName().isBlank()) {
+        if (userProfileDto.getMiddleName() != null) {
             user.setMiddleName(userProfileDto.getMiddleName());
         }
-        if (userProfileDto.getAddress() != null && !userProfileDto.getAddress().isBlank()) {
-            user.setAddress(userProfileDto.getAddress());
+        if (userProfileDto.getAddressLine1() != null) {
+            user.setAddressLine1(userProfileDto.getAddressLine1());
+        }
+        if (userProfileDto.getAddressLine2() != null) {
+            user.setAddressLine2(userProfileDto.getAddressLine2());
+        }
+        if (userProfileDto.getAddressLine3() != null) {
+            user.setAddressLine3(userProfileDto.getAddressLine3());
+        }
+        if (userProfileDto.getAddressLine4() != null) {
+            user.setAddressLine4(userProfileDto.getAddressLine4());
         }
         if (userProfileDto.getCity() != null && !userProfileDto.getCity().isBlank()) {
             user.setCity(userProfileDto.getCity());
+        }
+        if (userProfileDto.getCountry() != null && !userProfileDto.getCountry().isBlank()) {
+            user.setCountry(userProfileDto.getCountry());
+        }
+        if (userProfileDto.getZipCode() != null && !userProfileDto.getZipCode().isBlank()) {
+            user.setZipCode(userProfileDto.getZipCode());
         }
         if (userProfileDto.getState() != null && !userProfileDto.getState().isBlank()) {
             user.setState(userProfileDto.getState());

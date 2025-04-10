@@ -21,7 +21,8 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String jwtSecret = Base64.getEncoder().encodeToString("your256bitsecretyour256bitsecretiuybuyvbuybuyb".getBytes());
     private static final String SECRET_KEY = "your256bitsecretyour256bitsecretiuybuyvbuybuyb";
-    private static final long EXPIRATION_TIME = 86400000;
+    @Value("${jwt.expirationTime}")
+    private long EXPIRATION_TIME;
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
