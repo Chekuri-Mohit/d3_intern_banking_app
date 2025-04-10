@@ -50,6 +50,7 @@ public class AccountService {
         Optional<List<Account>> accounts = accountRepo.findByUserId(UserID);
         List<List<AccountResponseDto>> collect = accounts.stream().map(accountMapper::toAccountResponseDtoList).collect(Collectors.toList());
         return collect;
+
     }
 
 
