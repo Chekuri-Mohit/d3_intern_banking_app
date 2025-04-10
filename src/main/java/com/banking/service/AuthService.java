@@ -30,9 +30,9 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthMapper authMapper;
 
-    private static final ZoneId IST_ZONE = ZoneId.of("Asia/Kolkata");
+    private static final ZoneId IST_ZONE = ZoneId.of("GMT+05:30");
     private static final DateTimeFormatter LOGIN_FMT =
-        DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy 'at' h:mm a z", Locale.ENGLISH);
+        DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy 'at' h:mm a 'GMT+5:30'", Locale.ENGLISH);
 
     @Autowired
     public AuthService(UserRepository userRepository, JwtUtils jwtUtils, AuthMapper authMapper) {
