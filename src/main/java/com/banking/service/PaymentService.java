@@ -92,10 +92,14 @@ public class PaymentService {
         return paymentMapper.toDto(payment);
     }
 
+
     public Map<String,List<PaymentHistoryDto>> getPaymentHistoryGroupedByDate(String username) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         List<PaymentHistoryDto> history= paymentRepository.findPaymentHistoryByUserId(Long.valueOf(user.getId()));
-        return history.stream().collect(Collectors.groupingBy(PaymentHistoryDto::getFormattedPaymentDate, LinkedHashMap::new, Collectors.toList()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH);
+        return history.stream().sorted(Comparator.comparing((PaymentHistoryDto dto)->
+        LocalDate.parse(dto.getFormattedPaymentDate(), formatter)).reversed())
+            .collect(Collectors.groupingBy(PaymentHistoryDto::getFormattedPaymentDate, LinkedHashMap::new, Collectors.toList()));
     }
 
     private String maskAccountNumber(String accountNumber) {
