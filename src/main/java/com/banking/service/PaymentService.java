@@ -85,6 +85,7 @@ public class PaymentService {
         return paymentMapper.toDto(payment);
     }
 
+
     public Map<String,List<PaymentHistoryDto>> getPaymentHistoryGroupedByDate(String username) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         List<PaymentHistoryDto> history= paymentRepository.findPaymentHistoryByUserId(Long.valueOf(user.getId()));
