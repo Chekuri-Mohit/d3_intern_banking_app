@@ -1,7 +1,7 @@
 package com.banking.controller;
 
-import com.banking.dto.PayeeRequestDto;
-import com.banking.dto.PayeeResponseDto;
+import com.banking.schema.PayeeRequestDto;
+import com.banking.schema.PayeeResponseDto;
 import com.banking.service.PayeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -37,11 +37,12 @@ public class PayeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<List<PayeeResponseDto>>> getAllPayees() {
+    public ResponseEntity<List<PayeeResponseDto>> getAllPayees() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return ResponseEntity.ok(payeeService.getAllPayees(username));
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<PayeeResponseDto> updatePayee(
@@ -53,7 +54,7 @@ public class PayeeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePayee(@PathVariable Long id) {
-        payeeService.deletePayee(id);
+        payeeService.softDeletePayee(id);
         return ResponseEntity.ok("Payee deleted successfully.");
     }
 }
