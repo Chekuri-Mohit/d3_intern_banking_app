@@ -1,4 +1,4 @@
-package com.banking.dto;
+package com.banking.schema;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PayeeResponseDto {
-    private Long id;
+public class PayeeRequestDto {
     private String name;
     private String nickname;
     private String addressLine1;

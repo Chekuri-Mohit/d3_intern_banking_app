@@ -1,4 +1,4 @@
-package com.banking.dto;
+package com.banking.schema;
 
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -20,9 +20,14 @@ public class UserProfileDto {
 
 
     //optional
-    private String address;
+    private String addressLine1;
+    private String addressLine2;
+    private String addressLine3;
+    private String addressLine4;
     private String city;
     private String state;
+    private String zipCode;
+    private String country;
 
 
 }
