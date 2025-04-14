@@ -45,7 +45,8 @@ public class Payee {
     private String status;
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
-
+    @Column(name= "is_deleted")
+    private Boolean isDeleted=false;
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
     private User user;

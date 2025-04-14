@@ -38,11 +38,12 @@ public class PayeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<List<PayeeResponseDto>>> getAllPayees() {
+    public ResponseEntity<List<PayeeResponseDto>> getAllPayees() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return ResponseEntity.ok(payeeService.getAllPayees(username));
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<PayeeResponseDto> updatePayee(
@@ -53,7 +54,9 @@ public class PayeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ErrorResponse> deletePayee(@PathVariable Long id) {
-        return ResponseEntity.ok(payeeService.deletePayee(id));
+    public ResponseEntity<String> deletePayee(@PathVariable Long id) {
+        payeeService.softDeletePayee(id);
+        return ResponseEntity.ok("Payee deleted successfully.");
+
     }
 }

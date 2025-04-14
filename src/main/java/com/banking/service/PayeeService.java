@@ -46,13 +46,12 @@ public class PayeeService {
         return payeeMapper.toDto(savedPayee);
     }
 
-    public List<List<PayeeResponseDto>> getAllPayees(String username) {
+    public List<PayeeResponseDto> getAllPayees(String username) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer UserID = user.getId();
 
-        Optional<List<Payee>> payees = payeeRepository.findAllByUserId(UserID);
-        List<List<PayeeResponseDto>> collect = payees.stream().map(payeeMapper::toPayeeResponseDtoList).collect(Collectors.toList());
-        return collect;
+        List<Payee> payees = payeeRepository.findByUser_IdAndIsDeletedFalse(UserID);
+        return payees.stream().map(payeeMapper::toDto).collect(Collectors.toList());
     }
 
 
@@ -100,15 +99,13 @@ public class PayeeService {
         }
         Payee updatedPayee = payeeRepository.save(payee1);
         return payeeMapper.toDto(updatedPayee);
+    }
 
+    public void softDeletePayee(Long id) {
+        Payee payee = payeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Payee not found"));
+        payee.setIsDeleted(true);
+        payeeRepository.save(payee);
 
     }
 
-    public ErrorResponse deletePayee(Long id) {
-        if (!payeeRepository.existsById(id)) {
-            throw new RuntimeException("Payee not found with id " + id);
-        }
-        payeeRepository.deleteById(id);
-        return new ErrorResponse(true,"Deleted Payee with id " + id);
-    }
 }

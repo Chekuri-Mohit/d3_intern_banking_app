@@ -11,10 +11,5 @@ import java.util.Optional;
 public interface PayeeRepository extends JpaRepository<Payee, Long> {
 
     boolean existsByUser_IdAndAccountNumber(Integer userId, String accountNumber);
-
-
-    Optional<List<Payee>> findAllByUserId(Integer user_id);
-
-    Optional<Payee> findByUserIdAndAccountNumber(Integer user_id, String accountNumber);
-
+    List<Payee> findByUser_IdAndIsDeletedFalse(Integer user_id);
 }
