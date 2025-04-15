@@ -12,4 +12,5 @@ public interface PayeeRepository extends JpaRepository<Payee, Long> {
     boolean existsByUser_IdAndAccountNumber(Integer userId, String accountNumber);
     List<Payee> findByUser_IdAndIsDeletedFalse(Integer user_id);
     boolean existsByUser_IdAndIsDeletedFalseAndAccountNumber(Integer user_id, String accountNumber);
+
 }

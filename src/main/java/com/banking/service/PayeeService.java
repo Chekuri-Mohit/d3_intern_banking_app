@@ -53,7 +53,6 @@ public class PayeeService {
         return payees.stream().map(payeeMapper::toDto).collect(Collectors.toList());
     }
 
-
     public PayeeResponseDto updatePayee(String username, Long id, PayeeRequestDto payeeRequestDto) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer UserID = user.getId();
