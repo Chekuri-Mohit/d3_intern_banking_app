@@ -34,7 +34,7 @@ public class PayeeService {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer userId = user.getId();
-        if (payeeRepository.existsByUser_IdAndAccountNumber(userId, payeeRequestDto.getAccountNumber())) {
+        if (payeeRepository.existsByUser_IdAndIsDeletedFalseAndAccountNumber(userId, payeeRequestDto.getAccountNumber())) {
             throw new RuntimeException("Account number already exists " + payeeRequestDto.getAccountNumber());
         }
         if(accountRepo.existsByUser_IdAndAccountNumber(userId, payeeRequestDto.getAccountNumber())) {
@@ -53,7 +53,6 @@ public class PayeeService {
         List<Payee> payees = payeeRepository.findByUser_IdAndIsDeletedFalse(UserID);
         return payees.stream().map(payeeMapper::toDto).collect(Collectors.toList());
     }
-
 
     public PayeeResponseDto updatePayee(String username, Long id, PayeeRequestDto payeeRequestDto) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
