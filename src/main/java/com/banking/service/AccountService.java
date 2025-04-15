@@ -33,6 +33,10 @@ public class AccountService {
     public AccountResponseDto createAccount(String username, @Valid AccountRequestDto accountRequestDto) {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
+        Integer userId = user.getId();
+        if (accountRepo.existsByUser_IdAndAccountName(userId, accountRequestDto.getAccountName())) {
+            throw new RuntimeException("Duplicate account name " + accountRequestDto.getAccountName());
+        }
         Account account = accountMapper.toEntity(accountRequestDto);
         account.setUser(user);
         Account savedaccount = accountRepo.save(account);
@@ -55,7 +59,7 @@ public class AccountService {
     public AccountResponseDto updateAccount(String username, @Valid AccountUpdateDto accountUpdateDto) {
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
-        Integer UserID = user.getId();
+        Integer userId = user.getId();
 
         Optional<Account> optionalAccount = accountRepo.findByAccountNumber(accountUpdateDto.getAccountNumber());
         if (optionalAccount.isEmpty()) {
@@ -63,10 +67,12 @@ public class AccountService {
         }
         Account account = optionalAccount.get();
 
-        if (!UserID.equals(account.getUser().getId())) {
-            throw new RuntimeException("User not the same account number");
+        if (!userId.equals(account.getUser().getId())) {
+            throw new RuntimeException("Account doesn't belong to the user");
         }
-
+        if (accountRepo.existsByUser_IdAndAccountName(userId, accountUpdateDto.getNewAccountName())) {
+            throw new RuntimeException("Duplicate account name " + accountUpdateDto.getNewAccountName());
+        }
         account.setAccountName(accountUpdateDto.getNewAccountName());
         Account savedaccount = accountRepo.save(account);
         return accountMapper.toAccountResponseDto(savedaccount);

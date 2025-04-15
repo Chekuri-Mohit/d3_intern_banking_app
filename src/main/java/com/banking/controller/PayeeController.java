@@ -1,5 +1,6 @@
 package com.banking.controller;
 
+import com.banking.schema.ErrorResponse;
 import com.banking.schema.PayeeRequestDto;
 import com.banking.schema.PayeeResponseDto;
 import com.banking.service.PayeeService;
@@ -56,5 +57,6 @@ public class PayeeController {
     public ResponseEntity<String> deletePayee(@PathVariable Long id) {
         payeeService.softDeletePayee(id);
         return ResponseEntity.ok("Payee deleted successfully.");
+
     }
 }

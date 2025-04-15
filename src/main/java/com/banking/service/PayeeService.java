@@ -1,5 +1,6 @@
 package com.banking.service;
 
+import com.banking.schema.ErrorResponse;
 import com.banking.schema.PayeeRequestDto;
 import com.banking.schema.PayeeResponseDto;
 import com.banking.mapper.Payee2Mapper;
@@ -98,10 +99,12 @@ public class PayeeService {
         Payee updatedPayee = payeeRepository.save(payee1);
         return payeeMapper.toDto(updatedPayee);
     }
+
     public void softDeletePayee(Long id) {
         Payee payee = payeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Payee not found"));
         payee.setIsDeleted(true);
         payeeRepository.save(payee);
+
     }
 
 }
