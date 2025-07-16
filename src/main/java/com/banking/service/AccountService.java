@@ -30,7 +30,26 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Creates a new account for a user.
+     * 
+     * @param username The username of the account holder
+     * @param accountRequestDto The account creation request containing account details
+     * @return AccountResponseDto containing the created account information
+     * @throws IllegalArgumentException if input parameters are invalid
+     * @throws RuntimeException if user not found or account name already exists
+     */
     public AccountResponseDto createAccount(String username, @Valid AccountRequestDto accountRequestDto) {
+        // Input validation
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
+        if (accountRequestDto == null) {
+            throw new IllegalArgumentException("Account request cannot be null");
+        }
+        if (accountRequestDto.getAccountName() == null || accountRequestDto.getAccountName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Account name cannot be null or empty");
+        }
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer userId = user.getId();
@@ -42,11 +61,22 @@ public class AccountService {
         Account savedaccount = accountRepo.save(account);
         return accountMapper.toAccountResponseDto(savedaccount);
 
-
     }
 
 
+    /**
+     * Retrieves all accounts for a user.
+     * 
+     * @param username The username to get accounts for
+     * @return List of AccountResponseDto containing user's accounts
+     * @throws IllegalArgumentException if username is null or empty
+     * @throws RuntimeException if user is not found
+     */
     public List<List<AccountResponseDto>> getAllAccounts(String username) {
+        // Input validation
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
 
         User user = userRepository.findByuserName(username).orElseThrow(() -> new RuntimeException("User not found"));
         Integer UserID = user.getId();

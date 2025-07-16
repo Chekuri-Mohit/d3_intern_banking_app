@@ -19,7 +19,23 @@ public class ForgotPasswordService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Validates user credentials for password reset.
+     * 
+     * @param username The username to validate
+     * @param email The email to validate
+     * @return User object if validation succeeds
+     * @throws IllegalArgumentException if username or email is null/empty
+     * @throws RuntimeException if user not found or email doesn't match
+     */
     private User validateUser(String username, String email) {
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+        
         if (!userRepository.existsByUserName(username)) {
             throw new RuntimeException("Incorrect Username");
         }
@@ -30,8 +46,26 @@ public class ForgotPasswordService {
         return user;
     }
 
+    /**
+     * Resets user password after validating security question.
+     * 
+     * @param forgotPasswordDto The password reset request
+     * @return ErrorResponse indicating success or failure
+     * @throws IllegalArgumentException if input parameters are invalid
+     * @throws RuntimeException if validation fails
+     */
     public ErrorResponse forgotPassword(@Valid ForgotPasswordDto forgotPasswordDto) {
-       User user = validateUser(forgotPasswordDto.getUsername(), forgotPasswordDto.getEmail());
+        if (forgotPasswordDto == null) {
+            throw new IllegalArgumentException("Password reset request cannot be null");
+        }
+        if (forgotPasswordDto.getNewPassword() == null || forgotPasswordDto.getNewPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("New password cannot be null or empty");
+        }
+        if (forgotPasswordDto.getConfirmPassword() == null || forgotPasswordDto.getConfirmPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("Confirm password cannot be null or empty");
+        }
+        
+        User user = validateUser(forgotPasswordDto.getUsername(), forgotPasswordDto.getEmail());
         if(!user.getSecurityAnswer().equals(forgotPasswordDto.getSecurityAnswer())){
             throw new RuntimeException("Incorrect Security Answer");
         }
@@ -42,7 +76,6 @@ public class ForgotPasswordService {
         }
         userRepository.save(user);
         return new ErrorResponse(true,"Successfully changed password");
-
     }
 
     public String getSecurityQuestion(@Valid SecurityQuestionDto securityQuestionDto) {

@@ -34,6 +34,10 @@ import javax.security.auth.login.AccountNotFoundException;
 @Transactional
 public class PaymentService {
 
+    private static final int ACCOUNT_MASK_LENGTH = 4;
+    private static final String ACCOUNT_MASK_PREFIX = "****";
+    private static final String DEFAULT_MASK = "****";
+
     private final PaymentRepository paymentRepository;
     private final AccountRepo accountRepository;
     private final UserRepository userRepository;
@@ -49,9 +53,36 @@ public class PaymentService {
         this.payeeRepository = payeeRepository;
     }
 
-    // Create a new payment
+    /**
+     * Creates a new payment transaction between accounts.
+     * 
+     * @param username The username of the account holder making the payment
+     * @param dto The payment request containing amount and account details
+     * @return PaymentResponseDto containing the payment transaction details
+     * @throws IllegalArgumentException if input parameters are invalid
+     * @throws RuntimeException if accounts are not found or insufficient balance
+     */
     @Transactional
     public PaymentResponseDto createPayment(String username, PaymentRequestDto dto) {
+        // Input validation
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
+        if (dto == null) {
+            throw new IllegalArgumentException("Payment request cannot be null");
+        }
+        if (dto.getFromAccountId() == null) {
+            throw new IllegalArgumentException("From account ID cannot be null");
+        }
+        if (dto.getToPayeeId() == null) {
+            throw new IllegalArgumentException("To payee ID cannot be null");
+        }
+        if (dto.getAmount() == null) {
+            throw new IllegalArgumentException("Amount cannot be null");
+        }
+        if (dto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero");
+        }
 
         User user = userRepository.findByuserName(username).orElseThrow(() ->  new UsernameNotFoundException("Username not found"));
         Integer UserID = user.getId();
@@ -69,10 +100,6 @@ public class PaymentService {
         // Fetch Payee
         Payee payee = payeeRepository.findById(dto.getToPayeeId()).orElseThrow(() -> new RuntimeException("Payee not found"));
         String toAccountNumber=payee.getAccountNumber();
-
-        if(dto.getAmount().equals(BigDecimal.ZERO)){
-            throw new RuntimeException("Cannot pay zero amount");
-        }
 
         // Update balances with BigDecimal for precision
         fromAccount.setBalance(fromAccount.getBalance().subtract(dto.getAmount()));
@@ -93,6 +120,13 @@ public class PaymentService {
     }
 
 
+    /**
+     * Retrieves payment history for a user grouped by date.
+     * 
+     * @param username The username to get payment history for
+     * @return Map of payment history grouped by formatted date
+     * @throws UsernameNotFoundException if user is not found
+     */
     public Map<String,List<PaymentHistoryDto>> getPaymentHistoryGroupedByDate(String username) {
         User user = userRepository.findByuserName(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         List<PaymentHistoryDto> history= paymentRepository.findPaymentHistoryByUserId(Long.valueOf(user.getId()));
@@ -102,9 +136,15 @@ public class PaymentService {
             .collect(Collectors.groupingBy(PaymentHistoryDto::getFormattedPaymentDate, LinkedHashMap::new, Collectors.toList()));
     }
 
+    /**
+     * Masks account number for security purposes, showing only last 4 digits.
+     * 
+     * @param accountNumber The account number to mask
+     * @return Masked account number with format "****XXXX"
+     */
     private String maskAccountNumber(String accountNumber) {
-        if(accountNumber==null || accountNumber.length()<4) return "****";
-        return "****" +  accountNumber.substring(accountNumber.length()-4);
+        if(accountNumber==null || accountNumber.length()<ACCOUNT_MASK_LENGTH) return DEFAULT_MASK;
+        return ACCOUNT_MASK_PREFIX +  accountNumber.substring(accountNumber.length()-ACCOUNT_MASK_LENGTH);
     }
 
 }
